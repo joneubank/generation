@@ -1,0 +1,5 @@
+dist/
+!dist/index.html
+!dist/sketch/index.html
+
+node_modules/
