@@ -1,7 +1,7 @@
 export const grid = (x, y) => {
   return [...Array(x * y).keys()].map(i => ({
     u: (i % x) / (x - 1),
-    v: Math.floor(i / y) / (y - 1),
+    v: Math.floor(i / x) / (y - 1),
   }));
 };
 

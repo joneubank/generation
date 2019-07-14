@@ -7,7 +7,7 @@ export const options = () => ({
   width: null,
   height: null,
 });
-const distrobutions = {
+const distributions = {
   uniform: () => x => x,
   power: n => x => {
     if (n >= 0) {
@@ -27,7 +27,7 @@ const count = 10000;
 const vPos = 0.5;
 const radius = 3;
 const imageScale = 1;
-const distribution = distrobutions.sin(1 + Math.PI / 2, 0.5);
+const distribution = distributions.sin(1 + Math.PI / 2, 0.5);
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const { circle } = Draw(context);

@@ -21,8 +21,21 @@ const Draw = context => {
     }
   };
 
+  const rect = ({ x, y, width, height, fill, stroke, strokeWidth = 1 }) => {
+    if (fill) {
+      context.fillStyle = fill;
+      context.fillRect(x, y, width, height);
+    }
+    if (stroke) {
+      context.lineWidth = strokeWidth;
+      context.strokeStyle = stroke;
+      context.strokeRect(x, y, width, height);
+    }
+  };
+
   return {
     circle,
+    rect,
   };
 };
 
