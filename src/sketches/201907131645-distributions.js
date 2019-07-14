@@ -1,5 +1,5 @@
 import Draw from '../draw';
-import { line } from '../data';
+import { points } from '../data';
 export const options = () => ({
   title: null,
   pallete: 'sexual faith bikes',
@@ -36,7 +36,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   context.fillStyle = background.toRgbString();
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  const L = line(count);
+  const L = points(count);
   const y = canvas.height * vPos;
   const color = pallete.colors[0].inverse();
   const color2 = pallete.colors[0].inverse().darken(20);
