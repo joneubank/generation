@@ -6,4 +6,4 @@ export const options = () => ({
   height: null,
 });
 
-export const sketch = { context, rng, pallete, meta, canvas };
+export const sketch = ({ context, rng, pallete, meta, canvas }) => {};
