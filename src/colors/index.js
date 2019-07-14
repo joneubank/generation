@@ -1,6 +1,6 @@
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 
-import hash from '../hash';
+import hash from '../utils/hash';
 
 const ffffffff = 4294967295;
 

@@ -3,6 +3,22 @@ import Color, { hashColor } from './colors';
 import Pallete from './colors/palletes';
 import { getNoun, getAdjective } from './words';
 
+export const distributions = {
+  uniform: () => x => x,
+  power: n => x => {
+    if (n >= 0) {
+      return Math.pow(x, n);
+    } else {
+      return 1 - 1 / Math.pow(x, -n);
+    }
+  },
+  // normal: ({ mean = 0.5, variance = 1 } = {}) => x => mean,
+  sin: (phase = 0, period = 1) => x =>
+    (Math.sin(x * Math.PI * 2 * period + phase) + 1) / 2,
+  cos: (phase = 0, period = 1) => x =>
+    (Math.cos(x * Math.PI * 2 * period + phase) + 1) / 2,
+};
+
 const Random = (seed, context) => {
   let _context = context;
   let _seed = seed || Math.random();
@@ -10,11 +26,15 @@ const Random = (seed, context) => {
   let count = 0;
   const stack = [];
 
-  const next = () => {
+  const next = (dist = x => x) => {
     count += 1;
-    return rng();
+    return dist(rng());
   };
 
+  // solo manipulations
+  const jitter = (num, range) => num + next() * range * 2 - range;
+
+  // list manipulations
   const chooseOne = items => {
     return items[int(0, items.length - 1)];
   };
@@ -49,10 +69,12 @@ const Random = (seed, context) => {
     return output;
   };
 
+  // primitive type randoms
   const bool = (chance = 0.5) => (next() < chance ? true : false);
   const int = (min = 0, max = 100) =>
     Math.floor(next() * (max - min + 1)) + min;
 
+  // color type randoms
   const color = ({
     h = { min: 0, max: 360 },
     s = { min: 0, max: 1 },
@@ -152,6 +174,8 @@ const Random = (seed, context) => {
 
     color,
     pallete,
+
+    jitter,
 
     choose,
     chooseOne,

@@ -1,4 +1,4 @@
-export const options = () => ({ pallete: 'religious van tunnel' });
+export const options = () => ({ pallete: 'heritage installations' });
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const height = canvas.height;

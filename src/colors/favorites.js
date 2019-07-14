@@ -28,6 +28,8 @@ export const palletes = [
   'religious van tunnel',
   'responsible dot mistake',
   'native fur provision',
+  'integrated quarter grants',
+  
 ];
 
 export const colors = [
