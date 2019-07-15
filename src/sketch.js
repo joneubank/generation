@@ -23,7 +23,7 @@ const defaultOptions = {
 
   pallete: null,
 
-  fullscreen: true,
+  fullscreen: false,
   width: 2560,
   height: 1600,
 };

@@ -73,6 +73,7 @@ const Random = (seed, context) => {
   const bool = (chance = 0.5) => (next() < chance ? true : false);
   const int = (min = 0, max = 100) =>
     Math.floor(next() * (max - min + 1)) + min;
+  const float = (min = 0, max = 1) => next() * (max - min) + min;
 
   // color type randoms
   const color = ({
@@ -171,6 +172,7 @@ const Random = (seed, context) => {
 
     bool,
     int,
+    float,
 
     color,
     pallete,

@@ -1,5 +1,5 @@
 import Draw from '../draw';
-import { points } from '../data';
+import { line } from '../data';
 export const options = () => ({
   title: null,
   pallete: 'sexual faith bikes',
