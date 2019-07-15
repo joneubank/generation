@@ -43,9 +43,9 @@ const Random = (seed, context) => {
     const options = [...Array(length).keys()];
     const choices = [];
     for (let i = 0; i < count; i++) {
-      choices.push(options.splice(int(0, options.length - 1), 1));
+      choices.push(options.splice(int(0, options.length - 1), 1)[0]);
     }
-    return choices.map(choice => items.choice);
+    return choices.map(choice => items[choice]);
   };
 
   const shuffle = items => {

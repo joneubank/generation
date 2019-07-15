@@ -1,5 +1,6 @@
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 
+import { line } from '../data';
 import hash from '../utils/hash';
 
 const ffffffff = 4294967295;
@@ -18,6 +19,18 @@ export const hashColor = hash => {
   return tinycolor(hsv);
 };
 
+export const gradient = (c1, c2, steps) => {
+  const rgb1 = c1.toRgb();
+  const rgb2 = c2.toRgb();
+  return line(steps).map(i =>
+    tinycolor({
+      r: rgb1.r * i + rgb2.r * (1 - i),
+      g: rgb1.g * i + rgb2.g * (1 - i),
+      b: rgb1.b * i + rgb2.b * (1 - i),
+    }),
+  );
+};
+
 const Color = name => {
   const color = hashColor(hash(name));
   const value = () => tinycolor(color.toRgb());
@@ -31,12 +44,6 @@ const Color = name => {
     const code = value().toHsvString();
     return `Color:${name}=${code}`;
   };
-  const jitter = (x) => {
-    const val = value().toRgb();
-    
-    
-
-  }
   return {
     name,
     value,
