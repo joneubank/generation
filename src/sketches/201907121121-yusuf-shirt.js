@@ -4,9 +4,8 @@ import { grid } from '../data';
 export const options = () => ({
   // title: 'lung',
   pallete: null,
-  fullscreen: true,
-  width: null,
-  height: null,
+  fullscreen: false,
+  width: 1600
 });
 
 const gridSize = 7;
@@ -16,8 +15,8 @@ const radius = 50;
 const showChanceL2 = 0.85;
 const jitterRange = 0.3;
 const minJitter = 1.3;
-const darkened = 3;
-const darknessJitter = 0;
+const darkened = 10;
+const darknessJitter = 10;
 
 const randColor = () =>
   rng

@@ -62,7 +62,7 @@ const meta = () => ({
   sketchSeed,
   title,
   pallete: pallete.name,
-  size: { width, height },
+  size: { width: canvasWidth, height: canvasHeight },
   options,
 });
 
@@ -70,17 +70,28 @@ const meta = () => ({
  * Canvas Management
  * ***************** */
 const canvas = document.getElementById('canvas');
+const wrapper = document.getElementById('canvas-wrapper');
 
-let height = canvas.parentElement.scrollHeight;
-let width = canvas.parentElement.scrollWidth;
+let canvasHeight = options.fullscreen
+  ? canvas.parentElement.scrollHeight
+  : options.height;
+let canvasWidth = options.fullscreen
+  ? canvas.parentElement.scrollWidth
+  : options.width;
 
 const redraw = () => {
-  height = canvas.parentElement.offsetHeight;
-  width = canvas.parentElement.offsetWidth;
-  canvas.width = width;
-  canvas.height = height;
+  if (options.fullscreen) {
+    canvasHeight = canvas.parentElement.scrollHeight;
+    canvasWidth = canvas.parentElement.scrollWidth;
+  }
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  canvas.style.maxHeight = wrapper.parentElement.scrollHeight;
 
   const _meta = meta();
+  document.title = title;
+
   console.log('Drawing Sketch:', _meta);
   sketch.sketch({
     context,
@@ -89,7 +100,6 @@ const redraw = () => {
     meta: _meta,
     canvas,
   });
-  document.title = title;
 };
 
 const context = canvas.getContext('2d');
@@ -111,6 +121,7 @@ redraw();
  * ***************** */
 
 document.addEventListener('keypress', event => {
+  console.log(event);
   switch (event.code) {
     case 'KeyR':
       // Redraw sketch
@@ -130,7 +141,19 @@ document.addEventListener('keypress', event => {
       // Toggle fullscreen
       options.fullscreen = !options.fullscreen;
       redraw();
+    case 'KeyS':
+      download();
+      break;
+
     default:
       break;
   }
 });
+
+const downloadLink = document.getElementById('downloader');
+const download = () => {
+  const image = canvas.toDataURL('image/png');
+  downloadLink.setAttribute('href', image);
+  downloadLink.setAttribute('download', `${document.title}.png`);
+  downloadLink.click();
+};
