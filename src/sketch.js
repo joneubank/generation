@@ -24,8 +24,8 @@ const defaultOptions = {
   pallete: null,
 
   fullscreen: true,
-  width: 2048,
-  height: 2048,
+  width: 2560,
+  height: 1600,
 };
 const sketchOptions = sketch.options();
 
@@ -81,9 +81,17 @@ let canvasWidth = options.fullscreen
 
 const redraw = () => {
   if (options.fullscreen) {
-    canvasHeight = canvas.parentElement.scrollHeight;
-    canvasWidth = canvas.parentElement.scrollWidth;
+    wrapper.className = 'fullscreen-wrapper';
+  } else {
+    wrapper.className = 'framed-wrapper';
   }
+  canvasHeight = options.fullscreen
+    ? canvas.parentElement.scrollHeight
+    : options.height;
+  canvasWidth = options.fullscreen
+    ? canvas.parentElement.scrollWidth
+    : options.width;
+
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
@@ -141,6 +149,7 @@ document.addEventListener('keypress', event => {
       // Toggle fullscreen
       options.fullscreen = !options.fullscreen;
       redraw();
+      break;
     case 'KeyS':
       download();
       break;

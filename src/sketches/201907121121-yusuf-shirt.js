@@ -5,7 +5,6 @@ export const options = () => ({
   // title: 'lung',
   pallete: null,
   fullscreen: false,
-  width: 1600
 });
 
 const gridSize = 7;

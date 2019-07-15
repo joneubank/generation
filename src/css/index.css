@@ -17,13 +17,17 @@ body {
   top: 0px;
   left: 0px;
   background: #e2d1d9;
-  
+
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#canvas-wrapper {
+.fullscreen-wrapper {
+  height: 100%;
+  width: 100%;
+}
+.framed-wrapper {
   padding: 50px;
 }
 
@@ -31,7 +35,7 @@ canvas {
   height: 100%;
   width: 100%;
   display: block;
-  -webkit-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.7);
-  -moz-box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.7);
-  box-shadow: 0px 0px 34px 0px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 0px 0px 34px 4px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 0px 0px 34px 4 rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 34px 4px rgba(0, 0, 0, 0.7);
 }

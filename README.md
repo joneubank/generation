@@ -22,10 +22,12 @@ For a new algorithm/design, copy an existing sketch file or the `templates/sketc
 
 ### Keyboard Shortcuts
 
-`r` will redraw the whole piece
-
 `p` will generate a new Pallete and redraw the image with the same seed
 
-`f` will toggle the full page canvas (not properly implemented)
+`f` will toggle the full page canvas
 
-`space` will generate a new seed (except for values provided in options) and draw this
+`space` will generate a new seed and (except for values specified in options) and draw this
+
+`s` will open the file save dialog to save the current image
+
+`r` will redraw the whole piece (not very useful)
