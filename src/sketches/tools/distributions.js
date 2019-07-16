@@ -10,7 +10,6 @@ export const options = () => ({
 });
 
 const count = 30000;
-const vPos = 0.5;
 const radius = 3;
 const imageScale = 1;
 const distribution = distributions.power(0.2);
@@ -23,7 +22,6 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   const L = line(count);
-  const y = canvas.height * vPos;
   const color = pallete.colors[0].inverse();
   const color2 = pallete.colors[0].inverse().darken(20);
   const color3 = pallete.colors[0].value(0).darken(40);

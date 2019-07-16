@@ -33,10 +33,12 @@ const sketchOptions = sketch.options();
 // 1. this file
 // 2. config file
 // 3. imported sketch file
+// 4. query string overwrites
 const options = {
   ...defaultOptions,
   ...defaultSketchOptions,
   ...sketchOptions,
+  ...{ pallete: query.p, title: query.t },
 };
 
 console.log(`Options:`, options);
@@ -151,7 +153,7 @@ document.addEventListener('keypress', event => {
       redraw();
       break;
     case 'KeyS':
-      !downloading && download();
+      download();
       break;
 
     default:
@@ -159,14 +161,10 @@ document.addEventListener('keypress', event => {
   }
 });
 
-let downloading = false;
-
 const downloadLink = document.getElementById('downloader');
 const download = () => {
-  downloading = true;
   const image = canvas.toDataURL('image/png');
   downloadLink.setAttribute('href', image);
   downloadLink.setAttribute('download', `${document.title}.png`);
   downloadLink.click();
-  downloading = false;
 };

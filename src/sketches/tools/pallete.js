@@ -2,7 +2,7 @@ import Draw from '../../draw';
 import { line } from '../../data';
 
 export const options = () => ({
-  // pallete: 'assistant scores',
+  // pallete: 'intimate rent discs',
   fullscreen: false,
   width: 1200,
   height: 600,
