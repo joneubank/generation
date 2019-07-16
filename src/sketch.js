@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import Random from './random';
 import Pallete from './colors/palletes';
 import { defaultSketchOptions } from './config';
+import { pickBy } from 'lodash';
 
 console.log('Sketch says "Hello!"');
 /* ***************** *
@@ -38,7 +39,7 @@ const options = {
   ...defaultOptions,
   ...defaultSketchOptions,
   ...sketchOptions,
-  ...{ pallete: query.p, title: query.t },
+  ...pickBy({ pallete: query.p, title: query.t }, v => v !== undefined),
 };
 
 console.log(`Options:`, options);
