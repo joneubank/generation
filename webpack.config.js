@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -17,4 +18,11 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'sketch/index.html',
+      template: 'src/html/sketch.html',
+    }),
+  ],
 };

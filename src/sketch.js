@@ -151,7 +151,7 @@ document.addEventListener('keypress', event => {
       redraw();
       break;
     case 'KeyS':
-      download();
+      !downloading && download();
       break;
 
     default:
@@ -159,10 +159,14 @@ document.addEventListener('keypress', event => {
   }
 });
 
+let downloading = false;
+
 const downloadLink = document.getElementById('downloader');
 const download = () => {
+  downloading = true;
   const image = canvas.toDataURL('image/png');
   downloadLink.setAttribute('href', image);
   downloadLink.setAttribute('download', `${document.title}.png`);
   downloadLink.click();
+  downloading = false;
 };

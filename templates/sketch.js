@@ -1,3 +1,5 @@
+import Draw from '../draw';
+
 export const options = () => ({
   // title: '',
   // pallete: null,
@@ -6,4 +8,6 @@ export const options = () => ({
   // height: null,
 });
 
-export const sketch = ({ context, rng, pallete, meta, canvas }) => {};
+export const sketch = ({ context, rng, pallete, meta, canvas }) => {
+  const { rect, circle, path } = Draw(context);
+};
