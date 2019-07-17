@@ -44,11 +44,13 @@ const Color = name => {
     const code = value().toHsvString();
     return `Color:${name}=${code}`;
   };
+  const rgb = value().toRgbString();
   return {
     name,
     value,
     inverse,
     toString,
+    rgb,
   };
 };
 export default Color;

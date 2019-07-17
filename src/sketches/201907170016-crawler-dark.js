@@ -4,14 +4,14 @@ import Vec2 from '../data/Vec2';
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 
 export const options = () => ({
-  // title: '',
+  title: 'convinced toy barriers',
   // pallete: null,
   // fullscreen: true,
   width: 2000,
   height: 2000,
 });
 
-const steps = 10;
+const steps = 1500;
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const { rect, circle, path } = Draw(context);
@@ -20,7 +20,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   rect({
     width: canvas.width,
     height: canvas.height,
-    fill: tinycolor('hsv(0,0%,95%)').toRgbString(),
+    fill: tinycolor('hsv(0,0%,9%)').toRgbString(),
   });
 
   const initialTarget = Vec2(
@@ -35,7 +35,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     let direction = Vec2(0, 1).normalize();
     let target = initialTarget;
     let speed = 4;
-    let inertia = 20;
+    let inertia = 15;
     let jitter = 0;
 
     return {
@@ -51,15 +51,15 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     const vector = bot.pos
       .direction(bot.target)
       .add(bot.direction.scale(bot.inertia))
-      .add(Vec2(rng.next(), rng.next()).scale(bot.jitter))
+      .add(Vec2(rng.float(-1, 1), rng.float(-1, 1)).scale(bot.jitter))
       .normalize();
     bot.direction = vector;
     bot.pos = bot.pos.add(vector.scale(bot.speed));
   };
 
-  const bots = [...Array(pallete.colors.length).keys()].map(() => Bot());
+  const bots = [...Array(3).keys()].map(() => Bot());
 
-  const maxTargets = rng.int(1, 4);
+  const maxTargets = rng.int(2, 4);
 
   let iterations = 0;
 
@@ -77,12 +77,13 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
       // });
       // path({
       //   path: [start, end],
-      //   stroke: pallete.colors[i].rgb,
-      //   strokeWidth: 10,
+      //   stroke: pallete.colors[i % 2].rgb,
+      //   strokeWidth: 5,
       // });
-      circle({ ...end, radius: 5, fill: '#333' });
+      // circle({ ...start, radius: 3, fill: pallete.colors[i % 2].rgb });
+      circle({ ...end, radius: 3, fill: pallete.colors[i % 2].rgb });
     });
-    if (iterations % 1000 === 0) {
+    if (iterations % steps === 0) {
       const nextTarget = Vec2(
         rng.int(100, canvas.width - 100),
         rng.int(100, canvas.height - 100),
@@ -91,11 +92,11 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     }
   };
 
-  repeat(maxTargets * 1000, i => loop());
+  repeat(maxTargets * steps, i => loop());
 
   // const interval = setInterval(() => {
   //   loop();
-  //   if (iterations === maxTargets * 1000) {
+  //   if (iterations === maxTargets * steps) {
   //     clearInterval(interval);
   //   }
   // }, 1);

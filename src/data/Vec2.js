@@ -9,7 +9,12 @@ export const normalize = ({ x, y } = {}) => {
 
 const difference = (start, end) => Vec2(end.x - start.x, end.y - start.y);
 const add = (a, b) => Vec2(a.x + b.x, a.y + b.y);
-const scale = (vector, factor) => Vec2(vector.x * factor, vector.y * factor);
+const scale = (vector, factor) => {
+  return Vec2(vector.x * factor, vector.y * factor);
+};
+
+const polarToVec2 = (theta, r) =>
+  Vec2(r * Math.cos(theta), r * Math.sin(theta));
 
 const Vec2 = (x, y) => {
   const obj = { x, y };
