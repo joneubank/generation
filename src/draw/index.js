@@ -77,8 +77,16 @@ const Draw = context => {
     }
   };
 
-  const path = ({ path = [], strokeWidth, stroke, fill, close = false }) => {
+  const path = ({
+    path = [],
+    strokeWidth,
+    stroke,
+    fill,
+    close = false,
+    cap = 'round',
+  }) => {
     context.beginPath();
+    context.lineCap = cap;
     path.forEach(({ x, y }, i) => {
       if (i === 0) {
         context.moveTo(x, y);

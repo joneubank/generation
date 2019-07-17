@@ -1,5 +1,5 @@
-export const magnitude = ({ x, y } = {}) => Math.sqrt(x * x + y * y);
-export const normalize = ({ x, y } = {}) => {
+const magnitude = ({ x, y } = {}) => Math.sqrt(x * x + y * y);
+const normalize = ({ x, y } = {}) => {
   const M = magnitude({ x, y });
   return {
     x: x / M,
@@ -13,7 +13,7 @@ const scale = (vector, factor) => {
   return Vec2(vector.x * factor, vector.y * factor);
 };
 
-const polarToVec2 = (theta, r) =>
+export const polarToVec2 = (theta, r) =>
   Vec2(r * Math.cos(theta), r * Math.sin(theta));
 
 const Vec2 = (x, y) => {
