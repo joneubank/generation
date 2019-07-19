@@ -2,17 +2,21 @@ import Draw from '../draw';
 import Vec2, { polarToVec2 } from '../data/Vec2';
 import Spinner from '../data/Spinner';
 import { repeat } from '../utils';
+import { tinycolor } from '@thebespokepixel/es-tinycolor';
+
+/* This is extremely slow because of the bad method used for coloring a line in segments
+Run at your own risk! */
 
 export const options = () => ({
-  // title: '',
-  // pallete: null,
+  // title: 'upset seat hotel',
+  // pallete: 'far network tomatoes',
   // fullscreen: true,
   width: 2000,
   height: 2000,
 });
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {
-  const { rect, circle, path } = Draw(context);
+  const { rect, circle, path, colorPath } = Draw(context);
 
   rect({
     x: 0,
@@ -44,8 +48,8 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const basePeriod = 100;
 
   const cosDivisor = rng.int(1, 5) * basePeriod;
-  const sinDivisor = rng.int(1, 5) * basePeriod;
-  const bigRad = 400;
+  const sinDivisor = (rng.int(1, 5) * basePeriod) / 4;
+  const bigRad = 600;
 
   const innerRadius = rng.int(1, 19) * 20;
   const innerPeriod = rng.int(2, 9) * basePeriod;
@@ -53,13 +57,13 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const spinners = [
     // new Spinner(200, rng.float(0, Math.PI * 2), 1000),
     // new Spinner(innerRadius, rng.float(0, Math.PI * 2), innerPeriod),
-    new Spinner(rng.int(150, 250), 0, rng.int(2, 7) * basePeriod),
+    // new Spinner(rng.int(150, 250), 0, rng.int(2, 7) * basePeriod),
     new Spinner(rng.int(150, 350) / 2, 0, rng.int(2, 5) * basePeriod),
-    // new Spinner(
-    //   25,
-    //   rng.float(0, Math.PI * 2),
-    //   (rng.int(1, 3) * basePeriod) / 2,
-    // ),
+    new Spinner(
+      25,
+      rng.float(0, Math.PI * 2),
+      (rng.int(1, 3) * basePeriod) / 2,
+    ),
     // new Spinner(
     //   200,
     //   0,
@@ -70,17 +74,17 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     new Spinner(
       100,
       (rng.int(1, 8) * Math.PI) / 2,
-      rng.int(2, 5) * sinDivisor * 11,
+      rng.int(2, 5) * sinDivisor,
       (time, spinner) =>
-        (spinner.r =
-          bigRad || (bigRad / 1) * Math.sin((spinner.phase / sinDivisor) * 7)),
+        (spinner.r = (bigRad / 1) * Math.sin(spinner.phase / sinDivisor)),
     ),
     // new Spinner(30, 0, 1000),
   ];
 
-  const steps = 300000;
+  const steps = 50000;
   const timeStep = 1;
   const drawPath = [];
+  const color = rng.chooseOne(pallete.colors).value();
 
   repeat(steps, i => {
     spinners.forEach(s => s.update(timeStep));
@@ -88,8 +92,18 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
       (output, s) => output.add(s.vector()),
       Vec2(0, 0),
     );
-    drawPath.push(nextPoint);
+    drawPath.push({
+      ...nextPoint.obj,
+      strokeWidth: 3,
+      stroke: tinycolor({
+        ...color.toHsv(),
+        v: Math.max((i / steps) * 100, 1.01),
+      })
+        // .setAlpha(1)
+        .toRgbString(),
+    });
   });
 
-  path({ path: drawPath, stroke: '#333', strokeWidth: 3, close: false });
+  colorPath({ path: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
+  // path({ path: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
 };

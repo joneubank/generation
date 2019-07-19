@@ -13,6 +13,12 @@ const scale = (vector, factor) => {
   return Vec2(vector.x * factor, vector.y * factor);
 };
 
+const rotate = (theta, { x, y }) =>
+  Vec2(
+    x * Math.cos(theta) - y * Math.sin(theta),
+    y * Math.cos(theta) + x * Math.sin(theta),
+  );
+
 export const polarToVec2 = (theta, r) =>
   Vec2(r * Math.cos(theta), r * Math.sin(theta));
 
@@ -31,6 +37,7 @@ const Vec2 = (x, y) => {
   const subtract = other => difference(other, obj);
   const _add = other => add(obj, other);
   const _scale = factor => scale(obj, factor);
+  const _rotate = theta => rotate(theta, obj);
 
   return {
     x,
@@ -45,6 +52,7 @@ const Vec2 = (x, y) => {
     subtract,
     add: _add,
     scale: _scale,
+    rotate: _rotate,
   };
 };
 export default Vec2;

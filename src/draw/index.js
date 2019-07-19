@@ -84,8 +84,10 @@ const Draw = context => {
     fill,
     close = false,
     cap = 'round',
+    join = 'round',
   }) => {
     context.beginPath();
+    context.lineJoin = join;
     context.lineCap = cap;
     path.forEach(({ x, y }, i) => {
       if (i === 0) {
@@ -108,10 +110,52 @@ const Draw = context => {
     }
   };
 
+  /* This method of coloring a line is awful, extremely slow for long lines*/
+  const colorPath = ({
+    path = [],
+    strokeWidth,
+    stroke,
+    fill,
+    close = false,
+    cap = 'round',
+  }) => {
+    context.lineCap = cap;
+    path.forEach(({ x, y, stroke, strokeWidth }, i) => {
+      if (i >= 1) {
+        context.beginPath();
+        const start = path[Math.max(0, i - 2)];
+        const mid = path[i - 1];
+        const end = { x, y };
+        context.moveTo(start.x, start.y);
+        context.lineTo(mid.x, mid.y);
+        context.lineTo(end.x, end.y);
+
+        if (stroke) {
+          context.strokeStyle = stroke;
+          context.lineWidth = strokeWidth;
+          context.stroke();
+        }
+      }
+    });
+    if (close) {
+      context.lineTo(path[0].x, path[0].y);
+    }
+    if (fill) {
+      context.fillStyle = fill;
+      context.fill();
+    }
+    // if (stroke) {
+    //   context.strokeStyle = stroke;
+    //   context.lineWidth = strokeWidth;
+    //   context.stroke();
+    // }
+  };
+
   return {
     circle,
     rect,
     path,
+    colorPath,
   };
 };
 
