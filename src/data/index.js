@@ -6,6 +6,12 @@ export const grid = (x, y) =>
 
 export const line = steps => [...Array(steps).keys()].map(i => i / (steps - 1));
 
+export const circleSegments = steps =>
+  [...Array(steps).keys()].map(i => ({
+    u: Math.cos((i / (steps - 1)) * 2 * Math.PI),
+    v: Math.sin((i / (steps - 1)) * 2 * Math.PI),
+  }));
+
 export const segment = ({ start, end, steps }) =>
   line(steps).map(i => ({
     x: start.x * i + end.x * (1 - i),

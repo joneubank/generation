@@ -50,7 +50,7 @@ export const makeCell = ({
 });
 
 /* Tricell Main Class */
-function Tricell({ n, symmetry = 1 } = {}) {
+function Tricell({ n, symmetry = 1, mirror = false } = {}) {
   this.n = n;
   this.symmetry = symmetry;
   // Cells should contain the content: {fill, borders:[{width, stroke}, {width, stroke}, {width, stroke}]}
@@ -68,11 +68,17 @@ function Tricell({ n, symmetry = 1 } = {}) {
   this.getCell = function(rank, position) {
     const availablePositions = Math.floor(rankCount(rank) / this.symmetry);
     let symmetryPosition = position;
+    let symmetryCount = 0;
     while (symmetryPosition >= availablePositions) {
       symmetryPosition -= availablePositions;
+      symmetryCount += 1;
     }
 
-    return this.cells[totalCells(rank) + symmetryPosition];
+    const mirrorPosition =
+      mirror && symmetryCount % 2
+        ? availablePositions - symmetryPosition - 1
+        : symmetryPosition;
+    return this.cells[totalCells(rank) + mirrorPosition];
   };
 
   this.paths = function(scale) {

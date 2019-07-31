@@ -38,7 +38,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
 
   const draw = (width, height) => {
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
-    const n = 4;
+    const n = 5;
     const scale = (width / 2 / n) * 0.95;
 
     // const fillRate = rank => Math.pow(1 - (1 / n) * rank, 1);
@@ -48,7 +48,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
         Math.pow(1 - (1 / (2 * rank + 1) / 3) * position, 2) +
       0.05 * (n - rank);
 
-    const tricell = new Tricell({ n, symmetry: 6 });
+    const tricell = new Tricell({ n, symmetry: 6, mirror: true });
 
     repeat(totalCells(n), i => {
       const address = triIndexToAddress(i);
@@ -75,6 +75,6 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     });
   };
 
-  // draw(canvas.width, canvas.height);
-  layout.grid(7, 7, draw, { fitAll: true });
+  draw(canvas.width, canvas.height);
+  // layout.grid(7, 7, draw, { fitAll: true });
 };
