@@ -32,7 +32,7 @@ const Random = (seed, context) => {
   };
 
   // solo manipulations
-  const jitter = (num, range) => num + next() * range * 2 - range;
+  const fuzzy = (num, range) => num + next() * range * 2 - range;
 
   // list manipulations
   const chooseOne = items => {
@@ -177,7 +177,7 @@ const Random = (seed, context) => {
     color,
     pallete,
 
-    jitter,
+    fuzzy,
 
     choose,
     chooseOne,

@@ -42,7 +42,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     repeat(3, () => {
       const pal = rng.pallete();
       const rotation = rng.float(0, Math.PI / 2);
-      const gapSize = maxSize / n / 12;
+      const gapSize = maxSize / n / 6;
       const shift = Vec2(
         rng.int(-gapSize, gapSize),
         rng.int(-gapSize, gapSize),
@@ -52,7 +52,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
         const c = rng
           .chooseOne(pallete.colors)
           .value()
-          .darken(rng.jitter(15, 10))
+          .darken(rng.fuzzy(15, 10))
           .setAlpha(0.6)
           .toRgbString();
 

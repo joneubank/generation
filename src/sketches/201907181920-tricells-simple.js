@@ -73,7 +73,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     const c = rng
       .chooseOne(pallete.colors)
       .value()
-      .darken(rng.jitter(15, 10))
+      .darken(rng.fuzzy(15, 10))
       .toRgbString();
 
     const rotated = p.map(vec => vec.rotate(rotation));

@@ -27,7 +27,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     context.arc(
       x,
       y,
-      rng.jitter(radius, radius * sizeJitter),
+      rng.fuzzy(radius, radius * sizeJitter),
       0,
       2 * Math.PI,
       false,
@@ -38,7 +38,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
       .toRgbString();
     context.fill();
     if (rng.bool(strokeChance)) {
-      context.lineWidth = rng.jitter(strokeWidth, strokeWidth * strokeJitter);
+      context.lineWidth = rng.fuzzy(strokeWidth, strokeWidth * strokeJitter);
       context.strokeStyle = rng
         .chooseOne(pallete.colors)
         .value()
@@ -63,8 +63,8 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
     const centery = y * gapSize + (canvas.height - dim * gridScale) / 2;
 
     drawDot(
-      rng.jitter(centerx, gapSize * positionJitter),
-      rng.jitter(centery, gapSize * positionJitter),
+      rng.fuzzy(centerx, gapSize * positionJitter),
+      rng.fuzzy(centery, gapSize * positionJitter),
       randColor,
       randColor,
       rng.bool(strokeChance),

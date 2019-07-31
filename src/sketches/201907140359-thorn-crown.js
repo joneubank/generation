@@ -45,7 +45,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
       const rads = i * 2 * Math.PI;
       const x = r * Math.sin(rads);
       const y = r * Math.cos(rads);
-      return { x: rng.jitter(x, r * jitter), y: rng.jitter(y, r * jitter) };
+      return { x: rng.fuzzy(x, r * jitter), y: rng.fuzzy(y, r * jitter) };
     });
 
     path({

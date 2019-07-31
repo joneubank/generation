@@ -58,7 +58,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
         // fill: rng
         //   .chooseOne(pallete.colors)
         //   .value()
-        //   .darken(rng.jitter(darkJitter, darkJitter))
+        //   .darken(rng.fuzzy(darkJitter, darkJitter))
         //   .toRgbString(),
         stroke: fillColor.inverse().toRgbString(),
         strokeWidth: 8,

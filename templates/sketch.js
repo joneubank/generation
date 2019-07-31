@@ -7,8 +7,8 @@ export const options = () => ({
   // title: '',
   // pallete: null,
   // fullscreen: true,
-  // width: null,
-  // height: null,
+  // width: 2048,
+  // height: 2048,
 });
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {

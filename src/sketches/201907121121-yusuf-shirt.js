@@ -55,11 +55,11 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
         (0.5 - u) * (0.5 - u) + (0.5 - v) * (0.5 - v),
       );
       circle({
-        x: rng.jitter(u * gw, (gw / gridSize) * jitterRange * (minJitter - v)),
-        y: rng.jitter(v * gh, (gh / gridSize) * jitterRange * (minJitter - v)),
+        x: rng.fuzzy(u * gw, (gw / gridSize) * jitterRange * (minJitter - v)),
+        y: rng.fuzzy(v * gh, (gh / gridSize) * jitterRange * (minJitter - v)),
         fill: color3
           .value()
-          .darken(rng.jitter(darkened, darknessJitter))
+          .darken(rng.fuzzy(darkened, darknessJitter))
           .toRgbString(),
         radius: radius + 1,
       });
