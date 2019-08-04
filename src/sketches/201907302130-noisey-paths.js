@@ -107,14 +107,14 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
 
     // Cool circle loop:
     //
-    const testCircles = circleSegments(200).map(({ u, v }) => {
+    const testCircles = circleSegments(1000).map(({ u, v }) => {
       const pathRadius = 300;
       const x = u * pathRadius;
       const y = v * pathRadius;
       return noiseyCircle(x, y);
     });
     testCircles.forEach(testCircle =>
-      path({ path: testCircle, strokeWidth: 3, stroke: '#333', close: true }),
+      path({ path: testCircle, strokeWidth: 1, stroke: '#333', close: true }),
     );
   };
 
