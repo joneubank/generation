@@ -27,6 +27,8 @@ const defaultOptions = {
   fullscreen: false,
   width: 2560,
   height: 1600,
+
+  blend: null,
 };
 const sketchOptions = sketch.options();
 
@@ -99,6 +101,11 @@ const redraw = () => {
   canvas.height = canvasHeight;
 
   canvas.style.maxHeight = wrapper.parentElement.scrollHeight;
+
+  if (options.blend) {
+    console.log(`Applying Composite Operation: ${options.blend}`);
+    context.globalCompositeOperation = options.blend;
+  }
 
   const _meta = meta();
   document.title = title;
