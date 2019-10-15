@@ -1,8 +1,10 @@
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 
-import Draw from '../draw';
-import Layout from '../draw/layouts';
-import Symmetry from '../draw/symmetry';
+import Random from '../../random';
+
+import Draw from '../../draw';
+// import Layout from '../../draw/layouts';
+import Symmetry from '../../draw/symmetry';
 
 export const options = () => ({
   // title: '',
@@ -15,7 +17,7 @@ export const options = () => ({
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   const { rect, circle, path } = Draw(context);
-  const layout = Layout(context);
+  // const layout = Layout(context);
   const sym = Symmetry(context);
 
   // Uncomment a fill or add a different one to set a background. Default is transparent.
@@ -28,12 +30,14 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   });
 
   // Move 0,0 to the canvas center:
-  // context.translate(canvas.width / 2, canvas.height / 2);
+  context.translate(canvas.width / 2, canvas.height / 2);
 
-  const draw = (width, height) => {
+  const arcs = 4;
+
+  const draw = seed => () => {
+    const rand = Random(seed);
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
   };
 
-  draw(canvas.width, canvas.height);
-  // layout.grid(4, 4, draw);
+  sym.arc(draw(rng.next()), arcs);
 };
