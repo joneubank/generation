@@ -15,7 +15,7 @@
     "lodash": "^4.17.13",
     "query-string": "^6.8.1",
     "seed-random": "^2.2.0",
-    "tinygradient": "^1.0.0",
+    "tinygradient": "^1.1.0",
     "tumult": "^3.0.14"
   },
   "devDependencies": {
