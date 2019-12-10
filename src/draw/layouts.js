@@ -8,7 +8,7 @@ const Layout = context => {
     const height = fitAll ? canvas.height / y : canvas.height / (y - 1);
 
     const translateWidth = fitAll ? canvas.width - width : canvas.width;
-    const translateHeight = fitAll ? canvas.width - width : canvas.width;
+    const translateHeight = fitAll ? canvas.height - height : canvas.height;
     const xFitAdjust = fitAll ? width / 2 : 0;
     const yFitAdjust = fitAll ? height / 2 : 0;
 

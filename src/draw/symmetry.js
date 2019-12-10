@@ -5,7 +5,7 @@ const Symmetry = context => {
     repeat(sections, i => {
       const angle = (2 * Math.PI * i) / sections;
       context.rotate(angle);
-      draw();
+      draw(i);
       context.rotate(-angle);
     });
   };

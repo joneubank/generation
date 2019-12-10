@@ -71,8 +71,8 @@ const Random = (seed, context) => {
 
   // primitive type randoms
   const bool = (chance = 0.5) => (next() < chance ? true : false);
-  const int = (min = 0, max = 100) =>
-    Math.floor(next() * (max - min + 1)) + min;
+  const int = (min = 0, max = 100, dist = distributions.uniform()) =>
+    Math.floor(next(dist) * (max - min + 1)) + min;
   const float = (min = 0, max = 1, dist = distributions.uniform()) =>
     next(dist) * (max - min) + min;
 

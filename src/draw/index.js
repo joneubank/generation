@@ -6,9 +6,18 @@ const Draw = context => {
     fill = null,
     strokeWidth = 1,
     stroke = null,
+    start = 0,
+    arc = 1,
   }) => {
     context.beginPath();
-    context.arc(x, y, radius, 0, 2 * Math.PI, false);
+    context.arc(
+      x,
+      y,
+      radius,
+      start * 2 * Math.PI,
+      start * 2 * Math.PI + arc * 2 * Math.PI,
+      false,
+    );
     if (fill) {
       context.fillStyle = fill;
       context.fill();
@@ -109,6 +118,10 @@ const Draw = context => {
       context.stroke();
     }
   };
+
+  // const poly = ({segments, radius, jitter = 0, cap,}) => {
+
+  // }
 
   /* This method of coloring a line is awful, extremely slow for long lines*/
   const colorPath = ({
