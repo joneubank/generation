@@ -4,16 +4,18 @@ import { grid } from '../data';
 export const options = () => ({
   // title: 'lung',
   pallete: null,
-  fullscreen: false,
+  // fullscreen: false,
+
+  width:1080, height:1080
 });
 
-const gridSize = 7;
+const gridSize = 13;
 const gridScale = 0.69;
-const radius = 50;
+const radius = 21;
 
 const showChanceL2 = 0.85;
 const jitterRange = 0.3;
-const minJitter = 1.3;
+const minJitter = 0.15;
 const darkened = 10;
 const darknessJitter = 10;
 
@@ -55,8 +57,8 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
         (0.5 - u) * (0.5 - u) + (0.5 - v) * (0.5 - v),
       );
       circle({
-        x: rng.fuzzy(u * gw, (gw / gridSize) * jitterRange * (minJitter - v)),
-        y: rng.fuzzy(v * gh, (gh / gridSize) * jitterRange * (minJitter - v)),
+        x: rng.fuzzy(u * gw, (gw / gridSize) * jitterRange * (1+minJitter - 2*centerDistance)),
+        y: rng.fuzzy(v * gh, (gh / gridSize) * jitterRange * (1+minJitter - 2*centerDistance)),
         fill: color3
           .value()
           .darken(rng.fuzzy(darkened, darknessJitter))

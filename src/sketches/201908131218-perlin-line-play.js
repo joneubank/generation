@@ -10,8 +10,8 @@ export const options = () => ({
   // title: '',
   // pallete: null,
   // fullscreen: true,
-  width: 2048,
-  height: 2048,
+  width: 1080,
+  height: 1080,
 });
 
 export const sketch = ({ context, rng, pallete, meta, canvas }) => {

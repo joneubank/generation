@@ -5,8 +5,8 @@ export const options = () => ({
   // title: '',
   // pallete: 'intimate rent discs',
   // fullscreen: true,
-  // width: null,
-  // height: null,
+  width: 1080,
+  height: 1080,
 });
 
 const opacity = 0.2;

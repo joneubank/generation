@@ -1,12 +1,12 @@
 export const options = () => ({
   // title: 'ridiculous license mentions',
   // pallete: 'integrated quarter grants',
-  fullscreen: true,
-  width: null,
-  height: null,
+  // fullscreen: true,
+  width: 1080,
+  height: 1080,
 });
 
-const gridSize = 43;
+const gridSize = 34;
 const gridScale = 0.75;
 const radius = 13;
 const strokeWidth = 5;
@@ -33,7 +33,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
       false,
     );
     context.fillStyle = rng
-      .chooseOne(pallete.colors)
+      .chooseOne(pallete.colors.slice(0,3))
       .value()
       .toRgbString();
     context.fill();
@@ -48,7 +48,7 @@ export const sketch = ({ context, rng, pallete, meta, canvas }) => {
   };
 
   // const background = rng.color();
-  const background = rng.chooseOne(pallete.colors);
+  const background = pallete.colors[0];
   context.fillStyle = background.value().toRgbString();
   context.fillRect(0, 0, canvas.width, canvas.height);
 
