@@ -44,12 +44,25 @@ const options = {
   ...pickBy({ pallete: query.p, title: query.t }, v => v !== undefined),
 };
 
+const seedStack = [];
+
 console.log(`Options:`, options);
 let seed, rng, sketchSeed, title, pallete;
+let seedIndex = 0;
 const generate = () => {
-  seed = options.seed || Math.random();
+  if (seedIndex >= seedStack.length) {
+    const newSeed =
+      seedIndex && options.seed
+        ? options.seed
+        : rng
+        ? rng.next()
+        : Math.random();
+    seedStack.push(newSeed);
+  }
 
-  rng = Random(Math.random(), 'base');
+  console.log('index: ', seedIndex, seedStack);
+
+  rng = Random(seedStack[seedIndex], 'base');
 
   title = options.title || rng.label();
   rng.push({ seed: title, context: 'titled sketch' });
@@ -64,7 +77,6 @@ generate();
 const meta = () => ({
   filename,
   seed,
-  sketchSeed,
   title,
   pallete: pallete.name,
   size: { width: canvasWidth, height: canvasHeight },
@@ -138,8 +150,8 @@ redraw();
  * Keyboard Commands
  * ***************** */
 
-document.addEventListener('keypress', event => {
-  console.log(event);
+document.addEventListener('keydown', event => {
+  console.log(event.code);
   switch (event.code) {
     case 'KeyR':
       // Redraw sketch
@@ -151,7 +163,17 @@ document.addEventListener('keypress', event => {
       redraw();
       break;
     case 'Space':
+    case 'ArrowRight':
+      seedIndex += 1;
       // Refresh everything then redraw sketch
+      generate();
+      redraw();
+      break;
+    case 'ArrowLeft':
+      seedIndex -= 1;
+      if (seedIndex <= 0) {
+        seedIndex = 0;
+      }
       generate();
       redraw();
       break;

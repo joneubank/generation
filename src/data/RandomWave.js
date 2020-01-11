@@ -9,7 +9,6 @@ const RandomWave = (
 ) => {
   const freqs = range(1, layers + 1).map(i => rng.next() * maxFreq);
   const offset = rng.int(0, steps);
-  console.log(freqs);
   return range(0, steps).map(i =>
     freqs.reduce(
       (pos, freq) =>
