@@ -31,3 +31,5 @@ For a new algorithm/design, copy an existing sketch file or the `templates/sketc
 `s` will open the file save dialog to save the current image
 
 `r` will redraw the whole piece (not very useful)
+
+`Left` and `Right` Arrow keys will navigate through generated images (`left` to previous image, `right` to next image or create a new image if at the latest)
