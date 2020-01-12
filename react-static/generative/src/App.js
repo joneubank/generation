@@ -1,4 +1,3 @@
-require('babel-polyfill');
 import React from 'react';
 import { Root, Routes, addPrefetchExcludes } from 'react-static';
 //
