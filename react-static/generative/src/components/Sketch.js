@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Random from '../random';
 import Pallete from '../colors/palletes';
 
-import { merge } from 'lodash';
+import { merge, assign } from 'lodash';
 
 /* ********************************* *
  * Options and Random Initialization
@@ -25,7 +25,7 @@ let titleIndex = 0;
 const palleteArray = [];
 let palleteIndex = 0;
 
-const redraw = (options, draw, canvas, wrapper) => {
+const redraw = (params, options, draw, canvas, wrapper) => {
   console.log(`Options:`, options);
 
   let canvasHeight = options.fullscreen
@@ -54,6 +54,7 @@ const redraw = (options, draw, canvas, wrapper) => {
   }
 
   draw({
+    params,
     context,
     rng: Random(options.title),
     pallete: Pallete(options.pallete),
@@ -75,7 +76,46 @@ const download = () => {
   downloadLink.click();
 };
 let keydownHandler = undefined;
-export default ({ options = {}, draw = () => {} }) => {
+
+const compare = (obj1, obj2) => {
+  // Thanks to: https://gist.github.com/nicbell/6081098
+
+  //Loop through properties in object 1
+  for (var p in obj1) {
+    //Check property exists on both objects
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+    switch (typeof obj1[p]) {
+      //Deep compare objects
+      case 'object':
+        if (!compare(obj1[p], obj2[p])) return false;
+        break;
+      //Compare function code
+      case 'function':
+        if (
+          typeof obj2[p] == 'undefined' ||
+          (p != 'compare' && obj1[p].toString() != obj2[p].toString())
+        )
+          return false;
+        break;
+      //Compare values
+      default:
+        if (obj1[p] != obj2[p]) return false;
+    }
+  }
+  //Check object 2 for any extra properties
+  for (var p in obj2) {
+    if (typeof obj1[p] == 'undefined') return false;
+  }
+  return true;
+};
+
+const originalParams = {};
+const sketchParams = {};
+
+export default ({ options = {}, draw = () => {}, params = {} }) => {
+  const [stateParams, setStateParams] = useState(params);
+
   useEffect(() => {
     console.log('Sketch says "Hello!"');
 
@@ -97,9 +137,13 @@ export default ({ options = {}, draw = () => {} }) => {
       sketchOptions.pallete = palleteArray[palleteIndex];
     };
 
+    if (!compare(params, originalParams)) {
+      assign(sketchParams, params);
+    }
+
     regen();
 
-    redraw(sketchOptions, draw, canvas, wrapper);
+    redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
 
     if (keydownHandler) {
       document.removeEventListener('keydown', keydownHandler, false);
@@ -110,19 +154,19 @@ export default ({ options = {}, draw = () => {} }) => {
       switch (event.code) {
         case 'KeyR':
           // Redraw sketch
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'KeyP':
           // Change pallete and nothing else
           palleteIndex = palleteArray.length;
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'KeyO':
           // Change title and nothing else
           titleIndex = titleArray.length;
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'Space':
           titleIndex = titleArray.length;
@@ -130,7 +174,7 @@ export default ({ options = {}, draw = () => {} }) => {
           regen();
           // Refresh everything then redraw sketch
           // generate();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'ArrowRight':
           titleIndex += 1;
@@ -138,7 +182,7 @@ export default ({ options = {}, draw = () => {} }) => {
             titleIndex = titleArray.length;
           }
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'ArrowLeft':
           titleIndex -= 1;
@@ -146,7 +190,7 @@ export default ({ options = {}, draw = () => {} }) => {
             titleIndex = 0;
           }
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'ArrowUp':
           palleteIndex += 1;
@@ -154,7 +198,7 @@ export default ({ options = {}, draw = () => {} }) => {
             palleteIndex = palleteArray.length;
           }
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'ArrowDown':
           palleteIndex -= 1;
@@ -167,7 +211,7 @@ export default ({ options = {}, draw = () => {} }) => {
         case 'KeyF':
           // Toggle fullscreen
           sketchOptions.fullscreen = !sketchOptions.fullscreen;
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
           break;
         case 'KeyS':
           download();

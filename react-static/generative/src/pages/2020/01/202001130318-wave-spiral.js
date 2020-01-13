@@ -19,20 +19,22 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   const layout = Layout(context);
   const sym = Symmetry(context);
 
-  const { steps } = params;
+  const { steps, bg } = params;
 
   // Uncomment a fill or add a different one to set a background. Default is transparent.
   rect({
     width: canvas.width,
     height: canvas.height,
-    fill: '#eee',
+    // fill: '#eee',
     // fill: '#191919',
+    fill: bg,
   });
 
   // Move 0,0 to the canvas center:
-  // context.translate(canvas.width / 2, canvas.height / 2);
+  context.translate(canvas.width / 2, canvas.height / 2);
 
   const draw = (width, height) => {
+    // const curve = array(0, steps);
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
   };
 
@@ -53,6 +55,7 @@ export default () => (
     draw={draw}
     params={{
       steps: 10000,
+      bg: '#ff0000',
     }}
   />
 );
