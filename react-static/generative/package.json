@@ -7,12 +7,15 @@
     "build": "npm run pages && react-static build",
     "analyze": "react-static build --analyze",
     "serve": "serve dist -p 3000",
-    "pages": "node collect.js"
+    "pages": "node collect.js",
+    "sketch": "node new-sketch.js && npm run pages"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",
     "@thebespokepixel/es-tinycolor": "^1.0.7",
     "axios": "^0.19.0",
+    "dateformat": "^3.0.3",
+    "inquirer": "^7.0.3",
     "lodash": "^4.17.15",
     "query-string": "^6.9.0",
     "react": "^16.9.0",
