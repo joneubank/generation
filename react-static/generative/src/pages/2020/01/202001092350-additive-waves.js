@@ -57,7 +57,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         { x: width, y: height },
         { x: 0, y: height },
         ...positions.map((pos, index) =>
-          Vec2(pos * width, heights[index] * maxHeight + baseY),
+          Vec2(pos * width, heights.at(index / steps) * maxHeight + baseY),
         ),
       ];
 
