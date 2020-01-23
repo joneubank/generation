@@ -12,6 +12,9 @@ export const circleSegments = steps =>
     v: Math.sin((i / (steps - 1)) * 2 * Math.PI),
   }));
 
+/*
+ * Given a start Vec2 and an end Vec2, will calculate points between them and return as an array
+ */
 export const segment = ({ start, end, steps }) =>
   line(steps).map(i => ({
     x: start.x * i + end.x * (1 - i),

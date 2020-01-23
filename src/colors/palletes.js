@@ -2,7 +2,7 @@ import Random from '../random';
 
 const Pallete = name => {
   const rng = Random(name, `pallete(${name})`);
-  const count = rng.int(3, 5);
+  const count = 5;
   const colors = [];
   for (let i = 0; i < count; i++) {
     colors.push(rng.color());
