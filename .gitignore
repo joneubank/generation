@@ -1,5 +1,5 @@
 dist/
-!dist/index.html
-!dist/sketch/index.html
+artifacts/
+tmp/
 
 node_modules/
