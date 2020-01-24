@@ -26,7 +26,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     width: canvas.width,
     height: canvas.height,
     fill: '#eee',
-    // fill: '#191919',
+    fill: '#000',
   });
 
   // Move 0,0 to the canvas center:
@@ -34,10 +34,32 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
 
   const draw = (width, height) => {
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
+    // reset();
   };
 
   draw(canvas.width, canvas.height);
   // layout.grid(4, 4, draw);
+  // loop(() => {
+  //   draw(canvas.width, canvas.height);
+  // });
+};
+
+const loop = ({
+  deltaTime,
+  totalTime,
+  context,
+  pallete,
+  rng,
+  canvas,
+  params,
+}) => {
+  const { rect, circle, path } = Draw(context);
+  circle({
+    radius: deltaTime || 10,
+    x: rng.int(0, canvas.width),
+    y: rng.int(0, canvas.height),
+    fill: pallete.colors[0].value().toRgbString(),
+  });
 };
 
 export default () => (
@@ -51,6 +73,7 @@ export default () => (
       // blend: 'lighten',
     }}
     draw={draw}
+    loop={loop}
     params={{
       steps: 10000,
     }}

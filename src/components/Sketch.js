@@ -24,9 +24,15 @@ const titleArray = [];
 let titleIndex = 0;
 const palleteArray = [];
 let palleteIndex = 0;
+let frameRequestId = 0;
 
-const redraw = (params, options, draw, canvas, wrapper) => {
+const redraw = (params, options, draw, loop, canvas, wrapper) => {
   console.log(`Options:`, options);
+
+  if (frameRequestId) {
+    window.cancelAnimationFrame(frameRequestId);
+    frameRequestId = 0;
+  }
 
   let canvasHeight = options.fullscreen
     ? canvas.parentElement.scrollHeight
@@ -53,19 +59,46 @@ const redraw = (params, options, draw, canvas, wrapper) => {
     context.globalCompositeOperation = options.blend;
   }
 
+  const rng = Random(options.title);
+  const pallete = Pallete(options.pallete);
+  const meta = {
+    title: options.title,
+    pallete: options.pallete,
+    size: { width: canvasWidth, height: canvasHeight },
+    options,
+  };
   draw({
     params,
     context,
-    rng: Random(options.title),
-    pallete: Pallete(options.pallete),
-    meta: {
-      title: options.title,
-      pallete: options.pallete,
-      size: { width: canvasWidth, height: canvasHeight },
-      options,
-    },
+    rng,
+    pallete,
+    meta,
     canvas,
   });
+
+  /* Animation Loop */
+  const startTime = Date.now();
+  if (loop) {
+    let lastFrame = startTime;
+    const repeater = () => {
+      const thisFrame = Date.now();
+      const totalTime = thisFrame - startTime;
+      const deltaTime = thisFrame - lastFrame;
+      lastFrame = thisFrame;
+      loop({
+        deltaTime,
+        totalTime,
+        params,
+        context,
+        rng,
+        pallete,
+        meta,
+        canvas,
+      });
+      frameRequestId = window.requestAnimationFrame(repeater);
+    };
+    repeater();
+  }
 };
 
 const download = () => {
@@ -113,7 +146,7 @@ const compare = (obj1, obj2) => {
 const originalParams = {};
 const sketchParams = {};
 
-export default ({ options = {}, draw = () => {}, params = {} }) => {
+export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
   const [stateParams, setStateParams] = useState(params);
 
   useEffect(() => {
@@ -143,8 +176,9 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
 
     regen();
 
-    redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+    redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
 
+    /* Event Handlers Below */
     if (keydownHandler) {
       document.removeEventListener('keydown', keydownHandler, false);
     }
@@ -154,19 +188,19 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
       switch (event.code) {
         case 'KeyR':
           // Redraw sketch
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'KeyP':
           // Change pallete and nothing else
           palleteIndex = palleteArray.length;
           regen();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'KeyO':
           // Change title and nothing else
           titleIndex = titleArray.length;
           regen();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'Space':
           titleIndex = titleArray.length;
@@ -174,7 +208,7 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
           regen();
           // Refresh everything then redraw sketch
           // generate();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'ArrowRight':
           titleIndex += 1;
@@ -182,7 +216,7 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
             titleIndex = titleArray.length;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'ArrowLeft':
           titleIndex -= 1;
@@ -190,7 +224,7 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
             titleIndex = 0;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'ArrowUp':
           palleteIndex += 1;
@@ -198,7 +232,7 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
             palleteIndex = palleteArray.length;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'ArrowDown':
           palleteIndex -= 1;
@@ -206,12 +240,12 @@ export default ({ options = {}, draw = () => {}, params = {} }) => {
             palleteIndex = 0;
           }
           regen();
-          redraw(sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'KeyF':
           // Toggle fullscreen
           sketchOptions.fullscreen = !sketchOptions.fullscreen;
-          redraw(sketchParams, sketchOptions, draw, canvas, wrapper);
+          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'KeyS':
           download();
