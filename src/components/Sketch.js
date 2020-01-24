@@ -24,7 +24,12 @@ const titleArray = [];
 let titleIndex = 0;
 const palleteArray = [];
 let palleteIndex = 0;
+
+// Animation Props
 let frameRequestId = 0;
+let paused = false;
+let time = 0;
+let speed = 16;
 
 const redraw = (params, options, draw, loop, canvas, wrapper) => {
   console.log(`Options:`, options);
@@ -77,24 +82,22 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
   });
 
   /* Animation Loop */
-  const startTime = Date.now();
+
   if (loop) {
-    let lastFrame = startTime;
     const repeater = () => {
-      const thisFrame = Date.now();
-      const totalTime = thisFrame - startTime;
-      const deltaTime = thisFrame - lastFrame;
-      lastFrame = thisFrame;
-      loop({
-        deltaTime,
-        totalTime,
-        params,
-        context,
-        rng,
-        pallete,
-        meta,
-        canvas,
-      });
+      if (!paused) {
+        time += speed;
+        loop({
+          speed,
+          time,
+          params,
+          context,
+          rng,
+          pallete,
+          meta,
+          canvas,
+        });
+      }
       frameRequestId = window.requestAnimationFrame(repeater);
     };
     repeater();
@@ -188,6 +191,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
       switch (event.code) {
         case 'KeyR':
           // Redraw sketch
+          time = 0;
           redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
           break;
         case 'KeyP':
@@ -250,7 +254,9 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
         case 'KeyS':
           download();
           break;
-
+        case 'Enter':
+          paused = !paused;
+          break;
         default:
           break;
       }
