@@ -108,6 +108,7 @@ const download = () => {
   downloadLink.click();
 };
 let keydownHandler = undefined;
+let touchendHandler = undefined;
 
 const compare = (obj1, obj2) => {
   // Thanks to: https://gist.github.com/nicbell/6081098
@@ -258,7 +259,21 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
       }
     };
 
+    if (touchendHandler) {
+      document.removeEventListener('touchend', touchendHandler, false);
+    }
+
+    touchendHandler = function(event) {
+      titleIndex = titleArray.length;
+      palleteIndex = palleteArray.length;
+      regen();
+      // Refresh everything then redraw sketch
+      // generate();
+      redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+    };
+
     document.addEventListener('keydown', keydownHandler, false);
+    document.addEventListener('touchend', touchendHandler, false);
   });
 
   return (
