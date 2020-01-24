@@ -14,19 +14,18 @@ import Vec2, { polarToVec2 } from '../../../data/Vec2';
 import { repeat, clamp, array } from '../../../utils';
 import Random from '../../../random';
 
-let xWave;
-let yWave;
-let loopTime;
-let points = [];
-let lastPoint;
+// ===== CONSTANTS UPDATED EVERY LOOP
+// let loopTime = 0;
+// let points = [];
 
-const clear = ({ rng, canvas, params, pallete, context }) => {
-  lastPoint = 0;
-  points = [];
+const restart = ({ rng, canvas, params, pallete, context }) => {
+  // ===== INITIALIZE ALL THE CONSTANTS FOR A NEW DRAW
   loopTime = 0;
+  points = [];
 };
 
-const reset = ({ rng, canvas, params, pallete, context }) => {
+const blank = ({ rng, canvas, params, pallete, context }) => {
+  // ===== DRAW BLANK TO START THE DRAWING AND EVERY FRAME
   const { rect, circle, path } = Draw(context);
 
   context.resetTransform();
@@ -40,45 +39,23 @@ const reset = ({ rng, canvas, params, pallete, context }) => {
   });
 
   // Move 0,0 to the canvas center:
-  context.translate(canvas.width / 2, canvas.height / 2);
+  // context.translate(canvas.width / 2, canvas.height / 2);
 };
 
 const draw = ({ context, pallete, rng, canvas, params }) => {
-  clear({ rng, canvas, params, pallete, context });
-  reset({ rng, canvas, params, pallete, context });
+  restart({ rng, canvas, params, pallete, context });
+  blank({ rng, canvas, params, pallete, context });
 
+  // ===== FIRST FRAME ONLY DRAW
   const { rect, circle, path } = Draw(context);
-  const layout = Layout(context);
-  const sym = Symmetry(context);
-
-  const { steps } = params;
-
-  xWave = RandomWave(rng, { layers: 4 });
-  yWave = RandomWave(rng, { layers: 4 });
 };
 
 const loop = ({ speed, time, context, pallete, rng, canvas, params }) => {
-  reset({ rng, canvas, params, pallete, context });
+  loopTime += speed * params.speed;
+  blank({ rng, canvas, params, pallete, context });
 
+  // ===== DRAW EVERY LOOP
   const { rect, circle, path } = Draw(context);
-  while (points.length <= params.length) {
-    loopTime += (speed * params.speed) / 2500000;
-    const moment = loopTime * Math.PI * 2;
-    const point = Vec2(xWave.at(moment), yWave.at(moment)).scale(
-      (Math.min(canvas.width, canvas.height) / 2) * params.scale,
-    );
-    points.unshift(point);
-  }
-  path({
-    strokeWidth: 20,
-    // x: rng.int(0, canvas.width),
-    // y: rng.int(0, canvas.height),
-    path: points,
-    stroke: '#eee',
-    stroke: pallete.colors[0].value().toRgbString(),
-    // cap: 'none',
-  });
-  points = points.slice(0, params.length);
 };
 
 export default () => (
@@ -86,9 +63,9 @@ export default () => (
     options={{
       // title: '',
       // pallete: null,
-      fullscreen: true,
-      // width: 2048,
-      // height: 2048,
+      // fullscreen: true,
+      width: 2048,
+      height: 2048,
       // blend: 'difference',
     }}
     draw={draw}
