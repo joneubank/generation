@@ -39,12 +39,8 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
     frameRequestId = 0;
   }
 
-  let canvasHeight = options.fullscreen
-    ? canvas.parentElement.scrollHeight
-    : options.height;
-  let canvasWidth = options.fullscreen
-    ? canvas.parentElement.scrollWidth
-    : options.width;
+  let canvasHeight = options.fullscreen ? window.innerHeight : options.height;
+  let canvasWidth = options.fullscreen ? window.innerWidth : options.width;
 
   if (options.fullscreen) {
     wrapper.className = 'fullscreen-wrapper';
