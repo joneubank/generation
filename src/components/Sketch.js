@@ -31,6 +31,18 @@ let paused = false;
 let time = 0;
 let speed = 16;
 
+const resize = (canvas, width, height) => {
+  const ratio = width / height;
+
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const screenRatio = screenWidth / screenHeight;
+  const maxDim =
+    (screenRatio > ratio ? window.innerHeight : window.innerWidth) - 50;
+  canvas.style.height = maxDim * ratio + 'px';
+  canvas.style.width = maxDim / ratio + 'px';
+};
+
 const redraw = (params, options, draw, loop, canvas, wrapper) => {
   console.log(`Options:`, options);
 
@@ -44,8 +56,12 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
 
   if (options.fullscreen) {
     wrapper.className = 'fullscreen-wrapper';
+    canvas.style.height = '';
+    canvas.style.width = '';
   } else {
     wrapper.className = 'framed-wrapper';
+
+    resize(canvas, options.width, options.height);
   }
 
   canvas.width = canvasWidth;
@@ -109,6 +125,7 @@ const download = () => {
 };
 let keydownHandler = undefined;
 let touchendHandler = undefined;
+let resizeHandler = undefined;
 
 const compare = (obj1, obj2) => {
   // Thanks to: https://gist.github.com/nicbell/6081098
@@ -176,7 +193,9 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
 
     regen();
 
-    redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+    const redrawHelper = () =>
+      redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+    redrawHelper();
 
     /* Event Handlers Below */
     if (keydownHandler) {
@@ -189,19 +208,19 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
         case 'KeyR':
           // Redraw sketch
           time = 0;
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'KeyP':
           // Change pallete and nothing else
           palleteIndex = palleteArray.length;
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'KeyO':
           // Change title and nothing else
           titleIndex = titleArray.length;
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'Space':
           titleIndex = titleArray.length;
@@ -209,7 +228,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
           regen();
           // Refresh everything then redraw sketch
           // generate();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'ArrowRight':
           titleIndex += 1;
@@ -217,7 +236,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
             titleIndex = titleArray.length;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'ArrowLeft':
           titleIndex -= 1;
@@ -225,7 +244,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
             titleIndex = 0;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'ArrowUp':
           palleteIndex += 1;
@@ -233,7 +252,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
             palleteIndex = palleteArray.length;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'ArrowDown':
           palleteIndex -= 1;
@@ -241,12 +260,12 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
             palleteIndex = 0;
           }
           regen();
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'KeyF':
           // Toggle fullscreen
           sketchOptions.fullscreen = !sketchOptions.fullscreen;
-          redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+          redrawHelper();
           break;
         case 'KeyS':
           download();
@@ -269,11 +288,19 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
       regen();
       // Refresh everything then redraw sketch
       // generate();
-      redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
+      redrawHelper();
+    };
+
+    if (resizeHandler) {
+      window.removeEventListener('resize', resizeHandler);
+    }
+    resizeHandler = function() {
+      resize(canvas, options.width, options.height);
     };
 
     document.addEventListener('keydown', keydownHandler, false);
     document.addEventListener('touchend', touchendHandler, false);
+    window.addEventListener('resize', resizeHandler, true);
   });
 
   return (
