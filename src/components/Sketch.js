@@ -37,14 +37,26 @@ const resize = (canvas, width, height) => {
   const screenWidth = window.innerWidth;
   const screenHeight = window.innerHeight;
   const screenRatio = screenWidth / screenHeight;
-  const maxDim =
-    (screenRatio > ratio ? window.innerHeight : window.innerWidth) - 50;
-  const newHeight = maxDim * ratio;
-  const newWidth = maxDim * ratio;
-  if (newHeight > window.innerHeight || newWidth > window.innerWidth) {
-    canvas.style.height = maxDim * ratio + 'px';
-    canvas.style.width = maxDim / ratio + 'px';
+
+  let newHeight = height;
+  let newWidth = width;
+
+  if (screenRatio > ratio) {
+    const maxDim = window.innerHeight - 50;
+    if (height > maxDim) {
+      newHeight = maxDim;
+      newWidth = (newHeight / height) * width;
+    }
+  } else {
+    const maxDim = window.innerWidth - 50;
+    if (width > maxDim) {
+      newWidth = maxDim;
+      newHeight = (newWidth / width) * height;
+    }
   }
+
+  canvas.style.height = newHeight + 'px';
+  canvas.style.width = newWidth + 'px';
 };
 
 const redraw = (params, options, draw, loop, canvas, wrapper) => {
