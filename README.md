@@ -8,7 +8,7 @@ Install dependencies with NPM
 npm i
 ```
 
-Run the dev script, it will run locally using webpack-dev-server
+Run locally, code changes will show immediately on dev site:
 
 ```
 npm run start
