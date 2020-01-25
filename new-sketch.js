@@ -18,7 +18,7 @@ const run = async () => {
   );
   const template = fs.readFileSync(`./src/templates/${templateFile}`);
 
-  const filename = await new Promise(resolve =>
+  const sketchName = await new Promise(resolve =>
     inquirer
       .prompt([{ type: 'input', name: 'filename', message: 'Name:' }])
       .then(answers => resolve(answers.filename)),
@@ -27,13 +27,12 @@ const run = async () => {
   const now = new Date();
   const datestring = dateformat(now, 'yyyymmddhhMM');
 
-  fs.writeFileSync(
-    `./src/pages/${dateformat(now, 'yyyy')}/${dateformat(
-      now,
-      'mm',
-    )}/${dateformat(now, 'yyyymmddhhMM')}-${filename}.js`,
-    template,
-  );
+  const filename = `./src/pages/${dateformat(now, 'yyyy')}/${dateformat(
+    now,
+    'mm',
+  )}/${dateformat(now, 'yyyymmddhhMM')}-${sketchName}.js`;
+  fs.writeFileSync(filename, template);
+  console.log('File created at:', filename);
 };
 
 run();
