@@ -57,7 +57,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         { x: -width / 2, y: -height / 2 + tempY + stripeWidth },
       ];
 
-      path({ path: pathPoints, fill: outlineColor });
+      path({ points: pathPoints, fill: outlineColor });
       tempY += stripeWidth + stripeWidth * stripePitch;
     }
 

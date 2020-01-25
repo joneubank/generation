@@ -79,7 +79,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       //   fill: pallete.colors[i].rgb,
       // });
       // path({
-      //   path: [start, end],
+      //   points: [start, end],
       //   stroke: pallete.colors[i % 2].rgb,
       //   strokeWidth: 5,
       // });

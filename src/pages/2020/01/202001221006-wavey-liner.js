@@ -73,7 +73,7 @@ const loop = ({ speed, time, context, pallete, rng, canvas, params }) => {
     strokeWidth: 20,
     // x: rng.int(0, canvas.width),
     // y: rng.int(0, canvas.height),
-    path: points,
+    points,
     stroke: '#eee',
     stroke: pallete.colors[0].value().toRgbString(),
     // cap: 'none',

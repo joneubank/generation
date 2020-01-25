@@ -94,7 +94,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       });
 
       path({
-        path: pointPath
+        points: pointPath
           // .map(({ x, y }) => ({
           //   x: x + rng.fuzzy(0, 0.001),
           //   y: y + rng.fuzzy(0, 0.001),
@@ -120,7 +120,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
           minStrength,
       ).add(root);
       // path({
-      //   path: [vecToScreen(root.obj), vecToScreen(target.obj)],
+      //   points: [vecToScreen(root.obj), vecToScreen(target.obj)],
       //   strokeWidth: 5,
       //   stroke: '#aaa',
       // });

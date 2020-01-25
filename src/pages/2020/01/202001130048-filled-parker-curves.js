@@ -63,7 +63,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       ),
     );
     // path({
-    //   path: curve,
+    //   points: curve,
     //   strokeWidth: 13,
     //   stroke: pallete.colors
     //     .slice(1)
@@ -89,7 +89,10 @@ const draw = ({ context, pallete, rng, canvas }) => {
       .toRgbString();
     repeat(steps - 1, step => {
       path({
-        path: [curve1[step - (step % 2)], curve2[step + 1 - ((step + 1) % 2)]],
+        points: [
+          curve1[step - (step % 2)],
+          curve2[step + 1 - ((step + 1) % 2)],
+        ],
         strokeWidth: 13,
         stroke: '#191919',
         stroke: gradient.rgbAt(step / steps),

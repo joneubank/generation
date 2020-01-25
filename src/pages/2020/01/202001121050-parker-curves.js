@@ -56,7 +56,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       );
       const color = iter % 2; //(pallete.colors.length - 1);
       // path({
-      //   path: curve,
+      //   points: curve,
       //   strokeWidth: 13,
       //   stroke: pallete.colors
       //     .slice(1)
@@ -66,7 +66,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       //   stroke: '#eee',
       // });
       path({
-        path: curve,
+        points: curve,
         strokeWidth: 13,
         stroke: rng
           .chooseOne(pallete.colors.slice(1, 4))

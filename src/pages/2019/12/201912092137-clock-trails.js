@@ -95,7 +95,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         angle * 2 * Math.PI,
       );
       path({
-        path: [innerEnd, outterEnd],
+        points: [innerEnd, outterEnd],
         strokeWidth: handStrokeWidth,
         stroke: colors[i % colorCount].value().toRgbString(),
         cap: 'none',

@@ -88,17 +88,17 @@ const draw = ({ context, pallete, rng, canvas }) => {
       p3.push(pos3.p2);
     });
     path({
-      path: p1,
+      points: p1,
       strokeWidth: 3,
       stroke: pallete.colors[0].value().toRgbString(),
     });
     path({
-      path: p2,
+      points: p2,
       strokeWidth: 3,
       stroke: pallete.colors[1].value().toRgbString(),
     });
     path({
-      path: p3,
+      points: p3,
       strokeWidth: 3,
       stroke: pallete.colors[2].value().toRgbString(),
     });

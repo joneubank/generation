@@ -111,7 +111,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         case 'A':
         case 'F':
           path({
-            path: [
+            points: [
               { x: 0, y: 0 },
               { x: 0, y: -segmentLength },
             ],

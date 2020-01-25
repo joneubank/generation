@@ -141,7 +141,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         const end = { x: start.x + travel.x, y: start.y + travel.y };
 
         path({
-          path: [start, end],
+          points: [start, end],
           stroke: layerColors[layer].toRgbString(),
           strokeWidth: lineWidth,
         });

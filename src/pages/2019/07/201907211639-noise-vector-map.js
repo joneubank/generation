@@ -71,7 +71,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         strengthFactor * strengthNoise(u * stepSize, v * stepSize) +
           minStrength,
       ).add(root);
-      path({ path: [root, target], strokWidth: 5, stroke: '#eee' });
+      path({ points: [root, target], strokWidth: 5, stroke: '#eee' });
       // circle({
       //   x: u * width * scale + xAdjust,
       //   y: v * height * scale + yAdjust,

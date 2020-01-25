@@ -64,7 +64,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       });
 
       path({
-        path: _.initial(circlePoints),
+        points: _.initial(circlePoints),
         strokeWidth: 19,
         stroke: rand
           .chooseOne(pallete.colors)

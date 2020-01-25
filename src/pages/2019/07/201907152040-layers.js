@@ -46,7 +46,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       topMax = topMax + rng.int(-minShift, maxShift);
       bottomMax = bottomMax + rng.int(-minShift, maxShift);
       path({
-        path: [
+        points: [
           { x: topMin, y: 0 },
           { x: topMax, y: 0 },
           { x: bottomMax, y: canvas.height },

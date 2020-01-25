@@ -63,7 +63,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     drawPath.push(nextPoint.scale(age / spiralRate));
   });
 
-  path({ path: drawPath, stroke: '#333', strokeWidth: 5, close: false });
+  path({ points: drawPath, stroke: '#333', strokeWidth: 5, close: false });
 };
 
 export default () => (

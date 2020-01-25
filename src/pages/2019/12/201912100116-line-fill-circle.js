@@ -55,7 +55,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
           endAngle,
         );
         path({
-          path: [start, end],
+          points: [start, end],
           strokeWidth: 3, //dim * 0.01,
           stroke: usedColors[layer].value().toRgbString(),
         });

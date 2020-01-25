@@ -64,7 +64,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       const fill = lineColors[lineIndex];
 
       path({
-        path: wavePath,
+        points: wavePath,
         close: true,
         fill: fill,
       });

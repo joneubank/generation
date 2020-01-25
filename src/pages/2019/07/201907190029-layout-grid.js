@@ -59,7 +59,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         const rotated = p.map(vec => vec.add(shift).rotate(rotation));
 
         path({
-          path: rotated,
+          points: rotated,
           strokeWidth: 40,
           // stroke: c,
           fill: c,

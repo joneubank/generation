@@ -46,12 +46,12 @@ const draw = ({ context, pallete, rng, canvas }) => {
     const p4 = boundedPoint();
 
     // path({
-    //   path: [p1, p2],
+    //   points: [p1, p2],
     //   strokeWidth: 3,
     //   stroke: pallete.colors[0].value().toRgbString(),
     // });
     // path({
-    //   path: [p3, p4],
+    //   points: [p3, p4],
     //   strokeWidth: 3,
     //   stroke: pallete.colors[1].value().toRgbString(),
     // });
@@ -66,7 +66,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     );
     for (let i = 0; i < linesPerShape; i++) {
       path({
-        path: [l1[i], l2[i]],
+        points: [l1[i], l2[i]],
         strokeWidth: 2,
         stroke: colors[i].setAlpha(0.6).toRgbString(),
       });

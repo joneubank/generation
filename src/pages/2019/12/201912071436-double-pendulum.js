@@ -70,7 +70,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     //     fill: color,
     //   });
     // });
-    path({ path: p2, strokeWidth: 1, stroke: color });
+    path({ points: p2, strokeWidth: 1, stroke: color });
   };
 
   draw(canvas.width, canvas.height);

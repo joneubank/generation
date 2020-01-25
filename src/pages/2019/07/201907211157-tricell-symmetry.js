@@ -71,7 +71,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       const address = triIndexToAddress(i);
       const cell = tricell.getCell(address.rank, address.position);
       const cellPath = triPath(address.rank, address.position, scale);
-      path({ path: cellPath, fill: cell.fill, stroke: cell.fill });
+      path({ points: cellPath, fill: cell.fill, stroke: cell.fill });
     });
   };
 

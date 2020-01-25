@@ -104,8 +104,8 @@ const draw = ({ context, pallete, rng, canvas }) => {
     });
   });
 
-  colorPath({ path: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
-  // path({ path: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
+  colorPath({ points: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
+  // path({ points: drawPath, close: false, stroke: '#333', strokeWidth: 2 });
 };
 
 export default () => (

@@ -78,7 +78,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     // repeat(mouths, i =>
     // const i = 1;
     // path({
-    //   path: [
+    //   points: [
     //     { x: mouthLength + mouthPad * i, y: mouthPad * i },
     //     { x: mouthPad * i, y: mouthPad * i },
     //     polarToVec2(arcRads, mouthLength + mouthPad * i).add({
@@ -125,7 +125,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         const segments = rand.int(5, 9);
         const lineLength = rand.float(0.2, 0.6) * arcRads;
         path({
-          path: line(segments).map(i =>
+          points: line(segments).map(i =>
             polarToVec2(
               i * lineLength + rand.float(0.2, arcRads - lineLength) - 0.1,
               rand.fuzzy(distance, (100 * distance) / maxDistance),
@@ -143,7 +143,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         const segments = rand.int(5, 9);
         const lineLength = rand.float(0.2, 0.6) * arcRads;
         path({
-          path: line(segments).map(i =>
+          points: line(segments).map(i =>
             polarToVec2(
               i * lineLength + rand.float(0.2, arcRads - lineLength) - 0.1,
               rand.fuzzy(distance, (100 * distance) / maxDistance),

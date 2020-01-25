@@ -95,7 +95,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     drawPath.push(nextPoint);
   });
 
-  path({ path: drawPath, stroke: '#333', strokeWidth: 3, close: false });
+  path({ points: drawPath, stroke: '#333', strokeWidth: 3, close: false });
 };
 
 export default () => (

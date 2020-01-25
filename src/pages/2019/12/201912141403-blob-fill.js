@@ -63,7 +63,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
         { x: -width / 2, y: -height / 2 + tempY + stripeWidth },
       ];
 
-      path({ path: pathPoints, fill: outlineColor });
+      path({ points: pathPoints, fill: outlineColor });
       tempY += stripeWidth + stripeWidth * stripePitch;
     }
 
@@ -112,7 +112,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     fillCanvas.height = height;
     fillContext.setTransform(context.getTransform());
 
-    const { rect: fillRect, path: fillPath, circle: fillCircle } = Draw(
+    const { rect: fillRect, points: fillPath, circle: fillCircle } = Draw(
       fillContext,
     );
 
@@ -137,7 +137,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
     //     {x:-width/2, y:-height/2+tempY+stripeWidth},
     //   ];
 
-    //   fillPath({path:pathPoints, fill:outlineColor});
+    //   fillPath({points:pathPoints, fill:outlineColor});
     //   tempY+=stripeWidth+stripeWidth*stripePitch;
     // }
     context.drawImage(fillCanvas, -width / 2, -height / 2, width, height);
