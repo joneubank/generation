@@ -90,6 +90,8 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
   if (options.blend) {
     console.log(`Applying Composite Operation: ${options.blend}`);
     context.globalCompositeOperation = options.blend;
+  } else {
+    context.globalCompositeOperation = 'source-over';
   }
 
   const rng = Random(options.title);

@@ -16,11 +16,14 @@ const Pallete = name => {
     return `Pallete:${name}=[${colors.map(color => color.toString())}]`;
   };
 
+  const random = () => rng.chooseOne(colors);
+
   return {
     name,
     colors,
     toString,
     next,
+    random,
   };
 };
 export default Pallete;
