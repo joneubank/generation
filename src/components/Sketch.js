@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import SketchMenu from './SketchMenu';
 import Random from '../random';
 import Pallete from '../colors/palletes';
 
@@ -323,6 +324,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
 
   return (
     <>
+      <SketchMenu />
       <div className="fixed-fullscreen">
         <div id="canvas-wrapper">
           <canvas download="asdf" id="canvas"></canvas>

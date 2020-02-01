@@ -33,22 +33,22 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   rect({
     width: canvas.width,
     height: canvas.height,
-    fill: '#eee',
-    fill: '#191919',
     fill: pallete
       .random()
       .value()
       .toRgbString(),
+    fill: '#eee',
+    fill: '#191919',
   });
 
   // Move 0,0 to the canvas center:
   context.translate(canvas.width / 2, canvas.height / 2);
 
-  const stroke = pallete
-    .next()
-    .value()
-    .toRgbString();
   const drawLines = (width, height, distortion = point => point, scale = 1) => {
+    const stroke = pallete
+      .next()
+      .value()
+      .toRgbString();
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
     const minDim = Math.min(width, height);
     const shapeHeight = minDim * imageScale;
@@ -113,7 +113,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     // context.
   };
   draw(canvas.width, canvas.height);
-  // layout.grid(4, 4, draw);
+  // layout.grid(3, 3, draw);
 };
 
 export default () => (
@@ -129,11 +129,11 @@ export default () => (
     draw={draw}
     params={{
       imageScale: 0.85,
-      lines: 75,
-      lineFill: 0.5,
+      lines: 105,
+      lineFill: 0.35,
       pointDensity: 0.025,
       pointsPerLine: 200,
-      secondScale: 0.8,
+      secondScale: 1,
     }}
   />
 );
