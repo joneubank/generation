@@ -1,5 +1,5 @@
 import * as srng from 'seed-random';
-import Color, { hashColor } from './colors';
+import Color from './colors';
 import Pallete from './colors/palletes';
 import { getNoun, getAdjective } from './words';
 
@@ -82,26 +82,7 @@ const Random = (seed, context) => {
     s = { min: 0, max: 1 },
     v = { min: 0, max: 1 },
   } = {}) => {
-    let found = false;
-    const maxIters = 500;
-    let candidate;
-    let iters = 0;
-    while (!found && iters < maxIters) {
-      iters += 1;
-      candidate = Color(colorLabel());
-      const hsv = candidate.value().toHsv();
-      if (
-        hsv.h >= h.min &&
-        hsv.h <= h.max &&
-        hsv.s >= s.min &&
-        hsv.s <= s.max &&
-        hsv.v >= v.min &&
-        hsv.v <= v.max
-      ) {
-        found = true;
-      }
-    }
-    return candidate;
+    return Color(int(h.min, h.max), float(s.min, s.max), float(v.min, v.max));
   };
 
   const pallete = (options = {}) => Pallete(palleteLabel());

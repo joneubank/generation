@@ -27,12 +27,12 @@ const run = async () => {
   const now = new Date();
   const datestring = dateformat(now, 'yyyymmddhhMM');
 
-  const filename = `./src/pages/${dateformat(now, 'yyyy')}/${dateformat(
-    now,
-    'mm',
-  )}/${dateformat(now, 'yyyymmddhhMM')}-${sketchName}.js`;
-  fs.writeFileSync(filename, template);
-  console.log('File created at:', filename);
+  const dir = `./src/pages/${dateformat(now, 'yyyy')}/${dateformat(now, 'mm')}`;
+  const filename = `/${dateformat(now, 'yyyymmddhhMM')}-${sketchName}.js`;
+  fs.mkdir(dir, { recursivie: true }, err => {
+    fs.writeFileSync(dir + filename, template);
+    console.log('File created at:', filename);
+  });
 };
 
 run();

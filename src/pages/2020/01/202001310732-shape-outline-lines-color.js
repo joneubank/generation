@@ -84,6 +84,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
 
   draw(canvas.width, canvas.height);
   // layout.grid(2, 2, draw);
+  pallete.colors.forEach(console.log);
 };
 
 export default () => (

@@ -1,4 +1,5 @@
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
+import Random from '../random';
 
 import { line } from '../data';
 import hash from '../utils/hash';
@@ -31,9 +32,12 @@ export const gradient = (c1, c2, steps) => {
   );
 };
 
-const Color = name => {
-  const color = hashColor(hash(name));
+const Color = (h, s, v) => {
+  const color = tinycolor({ h, s, v });
+  const name = Random(color.toHsvString()).label();
   const value = () => tinycolor(color.toRgb());
+  const rgb = () => color.toRgbString();
+  const hsv = () => color.toHsvString();
   const inverse = () => {
     const rgb = value().toRgb();
     const irgb = { r: 255 - rgb.r, g: 255 - rgb.g, b: 255 - rgb.b };
@@ -44,13 +48,13 @@ const Color = name => {
     const code = value().toHsvString();
     return `Color:${name}=${code}`;
   };
-  const rgb = value().toRgbString();
   return {
     name,
     value,
     inverse,
     toString,
     rgb,
+    hsv,
   };
 };
 export default Color;
