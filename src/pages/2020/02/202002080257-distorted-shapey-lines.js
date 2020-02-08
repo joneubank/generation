@@ -201,8 +201,8 @@ export default () => (
     params={{
       lines: 300,
       steps: 200,
-      shapeMin: 13,
-      shapeMax: 21,
+      shapeMin: 3,
+      shapeMax: 13,
       gradientStepsMin: 5,
       gradientStepsMax: 12,
       gradientColorsMin: 3,

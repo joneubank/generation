@@ -175,10 +175,10 @@ export default () => (
       gradientColorsMax: 5,
       shapeScale: 0.95,
       shapeMinAngle: (Math.PI * 2) / 10,
-      lineMinAngle: 0.3 * Math.PI * 2,
-      lineMaxAngle: 0.7 * Math.PI * 2,
-      minLayers: 1,
-      maxLayers: 1,
+      lineMinAngle: 0.5 * Math.PI * 2,
+      lineMaxAngle: 0.9 * Math.PI * 2,
+      minLayers: 2,
+      maxLayers: 4,
       outline: false,
     }}
   />
