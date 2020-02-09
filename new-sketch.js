@@ -28,7 +28,7 @@ const run = async () => {
   const datestring = dateformat(now, 'yyyymmddhhMM');
 
   const dir = `./src/pages/${dateformat(now, 'yyyy')}/${dateformat(now, 'mm')}`;
-  const filename = `/${dateformat(now, 'yyyymmddhhMM')}-${sketchName}.js`;
+  const filename = `/${dateformat(now, 'yyyymmddHHMM')}-${sketchName}.js`;
   fs.mkdir(dir, { recursivie: true }, err => {
     fs.writeFileSync(dir + filename, template);
     console.log('File created at:', filename);
