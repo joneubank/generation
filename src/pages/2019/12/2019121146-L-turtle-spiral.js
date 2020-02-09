@@ -1,17 +1,12 @@
 import React from 'react';
 import tinygradient from 'tinygradient';
-import { tinycolor } from '@thebespokepixel/es-tinycolor';
 import _ from 'lodash';
-import * as tumult from 'tumult';
 
 import Sketch from '../../../components/Sketch';
 import Draw from '../../../draw';
 import Layout from '../../../draw/layouts';
 import Symmetry from '../../../draw/symmetry';
-import RandomWave from '../../../data/RandomWave';
-import { line, grid } from '../../../data';
-import Vec2 from '../../../data/Vec2';
-import { repeat, clamp, array } from '../../../utils';
+import { repeat } from '../../../utils';
 import Random from '../../../random';
 
 const rule = (initial, output) => ({
