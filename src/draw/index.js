@@ -164,11 +164,49 @@ const Draw = context => {
     // }
   };
 
+  const bezier = ({
+    start,
+    end,
+    control1,
+    control2,
+    stroke,
+    strokeWidth,
+    fill,
+    close = false,
+    cap = 'round',
+    join = 'round',
+  }) => {
+    context.beginPath();
+    context.lineJoin = join;
+    context.lineCap = cap;
+
+    context.moveTo(start.x, start.y);
+    context.bezierCurveTo(
+      control1.x,
+      control1.y,
+      control2.x,
+      control2.y,
+      end.x,
+      end.y,
+    );
+
+    if (fill) {
+      context.fillStyle = fill;
+      context.fill();
+    }
+    if (stroke) {
+      context.strokeStyle = stroke;
+      context.lineWidth = strokeWidth;
+      context.stroke();
+    }
+  };
+
   return {
     circle,
     rect,
     path,
     colorPath,
+    bezier,
   };
 };
 

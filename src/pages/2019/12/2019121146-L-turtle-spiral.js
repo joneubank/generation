@@ -72,11 +72,11 @@ const draw = ({ context, pallete, rng, canvas }) => {
   ]);
   const grad = gradient.rgb(iters + 1);
 
-  const repeats = rng.int(2, 5);
+  const repeats = rng.int(2, 4);
   const g = grammar({
     initial: [...Array(repeats).keys()].map(i => '[X]').join('!'),
     rules: [
-      rule('X', '-[A[FX]-X]E+[FX]+A'),
+      rule('X', '-[A[FXX]-X]E+[FX]+A'),
       rule('F', 'F^F'),
       rule('E', '[A][AvAvA][AA]'),
     ],
