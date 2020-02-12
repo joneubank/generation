@@ -31,6 +31,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     distortAmount,
     glow,
     sharp,
+    scale,
   } = params;
 
   // Uncomment a fill or add a different one to set a background. Default is transparent.
@@ -38,8 +39,8 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     width: canvas.width,
     height: canvas.height,
     fill: '#eee',
-    // fill: pallete.next().rgb(),
     fill: '#191919',
+    // fill: pallete.next().rgb(),
   });
 
   // Move 0,0 to the canvas center:
@@ -72,17 +73,14 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
       Vec2(-width / 3, -height / 4),
     ];
 
-    const alongShape = ratio => {
-      const delta = shapePoints[1].add(shapePoints[0].scale(-1));
-      return shapePoints[0].add(delta.scale(ratio));
-    };
-
     // path({ points: shapePoints, stroke: '#eee', strokeWidth: 5 });
     // path({
     //   points: shapePoints.map(point => point.scale(-1)),
     //   stroke: '#eee',
     //   strokeWidth: 5,
     // });
+    const shapeWaveX = RandomWave(rng);
+    const shapeWaveY = RandomWave(rng);
     const startWave = RandomWave(rng);
     const endWave = RandomWave(rng);
     const wave1 = RandomWave(rng);
@@ -90,7 +88,17 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     const wave3 = RandomWave(rng);
     const wave4 = RandomWave(rng);
 
-    repeat(lines + 1, i => {
+    const alongShape = ratio => {
+      // const delta = shapePoints[1].add(shapePoints[0].scale(-1));
+      // return shapePoints[0].add(delta.scale(ratio));
+      return Vec2(shapeWaveX.at(ratio), shapeWaveY.at(ratio)).scale(
+        scale * width,
+      );
+    };
+
+    repeat(lines + 1, x => {
+      const i = rng.int(0, lines);
+      // const x = i;
       const distort = point => {
         return point.add(
           Vec2(
@@ -104,9 +112,9 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
           ),
         );
       };
-      const start = alongShape(startWave.at(i / lines) + 0.5);
+      const start = distort(alongShape(startWave.at(i / lines) + 0.5));
       // const end = Vec2(-start.x, start.y);
-      const end = alongShape(endWave.at(i / lines) + 0.5);
+      const end = distort(alongShape(endWave.at(i / lines) + 0.5));
       // const points = segment({ start, end, steps }).map(
       //   point => distort(Vec2(point.x, point.y)),
       //   // .scale(3)
@@ -136,7 +144,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
           control2,
           stroke: gradient
             .rgbAt(i / lines)
-            .setAlpha(0.005)
+            .setAlpha(0.01)
             .darken(rng.fuzzy(0, 20))
             .toRgbString(),
           strokeWidth: rng.fuzzy(strokeWidth, 1),
@@ -148,10 +156,11 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
           control1,
           control2,
           stroke: gradient
-            .rgbAt(i / lines)
-            .setAlpha(0.2)
+            .rgbAt(x / lines)
+            .setAlpha(0.9)
+            .darken(rng.fuzzy(0, 20))
             .toRgbString(),
-          strokeWidth: 1,
+          strokeWidth: 5,
         });
     });
 
@@ -174,13 +183,14 @@ export default () => (
     }}
     draw={draw}
     params={{
-      lines: 10000,
+      lines: 1500,
       steps: 300,
+      scale: 0.7,
       gradientStepsMin: 13,
       gradientStepsMax: 21,
-      gradientColorsMin: 3,
-      gradientColorsMax: 5,
-      strokeWidth: 25,
+      gradientColorsMin: 2,
+      gradientColorsMax: 3,
+      strokeWidth: 150,
       distortAmount: 2000,
       glow: true,
       sharp: true,
