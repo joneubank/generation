@@ -1,4 +1,4 @@
-const Draw = context => {
+const Draw = (context) => {
   const circle = ({
     x = 0,
     y = 0,
@@ -8,8 +8,12 @@ const Draw = context => {
     stroke = null,
     start = 0,
     arc = 1,
+    useOrigin = false,
   }) => {
     context.beginPath();
+    if (useOrigin) {
+      context.moveTo(x, y);
+    }
     context.arc(
       x,
       y,

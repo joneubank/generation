@@ -17,6 +17,7 @@
     "dateformat": "^3.0.3",
     "inquirer": "^7.0.3",
     "lodash": "^4.17.15",
+    "nice-color-palettes": "^3.0.0",
     "query-string": "^6.9.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

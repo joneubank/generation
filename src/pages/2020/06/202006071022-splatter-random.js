@@ -59,7 +59,11 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     });
     // circle({
     //   ...rootPos,
-    //   fill: color.clone().setAlpha(0.2).toRgbString(),
+    //   fill: color
+    //     .clone()
+    //     .darken(rng.int(0, 3))
+    //     .lighten(rng.int(0, 3))
+    //     .toRgbString(),
     //   radius: rng.fuzzy(size, size * 0.1),
     // });
   };

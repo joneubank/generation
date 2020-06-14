@@ -4,13 +4,14 @@ import { tinycolor } from '@thebespokepixel/es-tinycolor';
 import _ from 'lodash';
 import * as tumult from 'tumult';
 
+import { default as t1000 } from 'nice-color-palettes/1000';
+
 import Sketch from '../../../components/Sketch';
 import Draw from '../../../draw';
 import Layout from '../../../draw/layouts';
 import Symmetry from '../../../draw/symmetry';
 import RandomWave from '../../../data/RandomWave';
-import ParkerCurve from '../../../data/ParkerCurve';
-import { line, grid, circleSegments } from '../../../data';
+import { line, grid } from '../../../data';
 import Vec2, { polarToVec2 } from '../../../data/Vec2';
 import { repeat, clamp, array } from '../../../utils';
 import Random from '../../../random';
@@ -20,54 +21,64 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   const layout = Layout(context);
   const sym = Symmetry(context);
 
-  const {
-    steps,
-    radiusScale,
-    outerCurveScale,
-    outerCurveLoops,
-    outerCurveOrder,
-    strokeWidth,
-  } = params;
+  const { steps, walkers, stepSize } = params;
+
+  const walkDirections = [
+    Vec2(0, 1),
+    Vec2(1, 0),
+    Vec2(1, 1),
+    Vec2(0, -1),
+    Vec2(-1, 0),
+    Vec2(-1, -1),
+    Vec2(-1, 1),
+    Vec2(1, -1),
+  ].map((i) => i.normalize());
 
   // Uncomment a fill or add a different one to set a background. Default is transparent.
+  const prng = Random(pallete.next().rgb());
+  const nicePallete = prng.chooseOne(t1000);
   rect({
     width: canvas.width,
     height: canvas.height,
     fill: '#eee',
-    // fill: '#191919',
+    fill: rng.chooseOne(nicePallete),
   });
 
   // Move 0,0 to the canvas center:
   context.translate(canvas.width / 2, canvas.height / 2);
 
   const draw = (width, height) => {
-    const circleRadius = (Math.min(width, height) / 2) * radiusScale;
-    const curveRadius = (Math.min(width, height) / 2) * outerCurveScale;
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
-    const circlePoints = circleSegments(steps).map((point) => ({
-      x: point.u * circleRadius,
-      y: point.v * circleRadius,
-    }));
+    repeat(walkers, (walker) => {
+      const points = [];
+      const start = Vec2(0, 0);
+      let pos = start;
+      points.push(pos);
 
-    // path({ points: circlePoints, strokeWidth, stroke: '#191919' });
+      repeat(steps, (step) => {
+        // random walk
+        pos = pos.add(
+          rng
+            .chooseOne(walkDirections)
+            // .scale(rng.fuzzy(stepSize, stepSize / 3)),
+            .scale(stepSize),
+        );
+        points.push(pos);
+      });
 
-    const curve = ParkerCurve(rng, { order: outerCurveOrder });
-    const curvePoints = array(0, steps).map((i) =>
-      curve.at((i * outerCurveLoops) / steps).scale(curveRadius),
-    );
-    path({ points: curvePoints, strokeWidth, stroke: '#191919' });
-
-    repeat(steps, (step) => {
       path({
-        points: [circlePoints[step], curvePoints[step]],
-        strokeWidth,
-        stroke: '#191919',
+        points,
+        stroke: tinycolor(rng.chooseOne(nicePallete))
+          .setAlpha(0.9)
+          .darken(rng.fuzzy(5, 5))
+          .toRgbString(),
+        strokeWidth: 17,
       });
     });
   };
 
-  draw(canvas.width, canvas.height);
-  // layout.grid(4, 4, draw);
+  // draw(canvas.width, canvas.height);
+  layout.grid(34, 34, draw);
 };
 
 export default () => (
@@ -82,12 +93,9 @@ export default () => (
     }}
     draw={draw}
     params={{
-      steps: 1000,
-      strokeWidth: 2,
-      radiusScale: 0.5,
-      outerCurveScale: 0.95,
-      outerCurveLoops: 1,
-      outerCurveOrder: 2,
+      walkers: 1,
+      steps: 1050,
+      stepSize: 5,
     }}
   />
 );
