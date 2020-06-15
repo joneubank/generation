@@ -22,7 +22,8 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   const layout = Layout(context);
   const sym = Symmetry(context);
 
-  const { minRadius, maxRadius, steps, rotations } = params;
+  const { minRadius, maxRadius, steps } = params;
+  const rotations = rng.fuzzy(0, 1);
 
   const prand = Random(pallete.colors[0].rgb());
   const nicePallete = prand.chooseOne(t1000).map((i) => i);
@@ -95,6 +96,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
         stroke: nicePallete[4],
         stroke: '#191919',
         stroke: color.rgb(),
+        close: true,
       });
     });
   };
@@ -118,7 +120,7 @@ export default () => (
       minRadius: 13,
       maxRadius: 1000,
       steps: 400,
-      rotations: 0.5,
+      rotations: 0.7,
     }}
   />
 );
