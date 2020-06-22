@@ -144,7 +144,7 @@ export default () => (
       spiralOriginOffsetMax: 0,
       pathRadius: 700,
       wheelsMin: 1,
-      wheelsMax: 2,
+      wheelsMax: 1,
       strokeWidth: 1,
       noiseAmplitude: 1,
     }}
