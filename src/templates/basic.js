@@ -7,17 +7,16 @@ import * as tumult from 'tumult';
 import Sketch from '../../../components/Sketch';
 import Draw from '../../../draw';
 import Layout from '../../../draw/layouts';
-import Symmetry from '../../../draw/symmetry';
 import RandomWave from '../../../data/RandomWave';
 import { line, grid } from '../../../data';
 import Vec2, { polarToVec2 } from '../../../data/Vec2';
 import { repeat, clamp, array } from '../../../utils';
 import Random from '../../../random';
+import { simplex, perlin } from '../../../data/noise';
 
 const draw = ({ context, pallete, rng, canvas, params }) => {
   const { rect, circle, path } = Draw(context);
   const layout = Layout(context);
-  const sym = Symmetry(context);
 
   const { steps } = params;
 
