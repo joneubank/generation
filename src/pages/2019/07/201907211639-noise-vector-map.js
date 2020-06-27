@@ -26,7 +26,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
       Math.max(0, (noise.octavate(octaves, x, y) + SQRT2) / (2 * SQRT2)),
     );
 
-  const transformNoise = noise => (x, y) => noise(x, y); //Math.sin(noise(x, y));
+  const transformNoise = (noise) => (x, y) => noise(x, y); //Math.sin(noise(x, y));
 
   // Uncomment a fill or add a different one to set a background. Default is transparent.
   rect({
@@ -41,11 +41,11 @@ const draw = ({ context, pallete, rng, canvas }) => {
   // context.translate(canvas.width / 2, canvas.height / 2);
 
   const draw = (width, height) => {
-    const n = 144;
+    const n = 55;
     const scale = 0.95;
 
     const octaves = 3;
-    const stepSize = 4 / octaves;
+    const stepSize = 12 / octaves;
     const angleNoise = transformNoise(
       normalizeNoise(new tumult.Simplex2(rng.next()), octaves),
     );
@@ -70,8 +70,11 @@ const draw = ({ context, pallete, rng, canvas }) => {
         angleNoise(u * stepSize, v * stepSize) * Math.PI * 2,
         strengthFactor * strengthNoise(u * stepSize, v * stepSize) +
           minStrength,
-      ).add(root);
+      )
+        .scale(2)
+        .add(root);
       path({ points: [root, target], strokWidth: 5, stroke: '#eee' });
+      circle({ ...root.obj, fill: '#fff', radius: 2 });
       // circle({
       //   x: u * width * scale + xAdjust,
       //   y: v * height * scale + yAdjust,
