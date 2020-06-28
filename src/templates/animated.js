@@ -15,8 +15,8 @@ import { repeat, clamp, array } from '../../../utils';
 import Random from '../../../random';
 
 // ===== CONSTANTS UPDATED EVERY LOOP
-// let loopTime = 0;
-// let points = [];
+let loopTime = 0;
+let points = [];
 
 const restart = ({ rng, canvas, params, pallete, context }) => {
   // ===== INITIALIZE ALL THE CONSTANTS FOR A NEW DRAW

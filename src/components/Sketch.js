@@ -120,6 +120,7 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
         time += speed;
         loop({
           speed,
+          ticks: speed,
           time,
           params,
           context,
@@ -221,7 +222,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
       document.removeEventListener('keydown', keydownHandler, false);
     }
 
-    keydownHandler = function(event) {
+    keydownHandler = function (event) {
       console.log(event.code);
       switch (event.code) {
         case 'KeyR':
@@ -301,7 +302,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
       document.removeEventListener('touchend', touchendHandler, false);
     }
 
-    touchendHandler = function(event) {
+    touchendHandler = function (event) {
       titleIndex = titleArray.length;
       palleteIndex = palleteArray.length;
       regen();
@@ -313,7 +314,7 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
     }
-    resizeHandler = function() {
+    resizeHandler = function () {
       resize(canvas, options.width, options.height);
     };
 
