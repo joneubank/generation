@@ -110,7 +110,9 @@ const Draw = (context) => {
       }
     });
     if (close) {
-      context.lineTo(points[0].x, points[0].y);
+      if (points[0]) {
+        context.lineTo(points[0].x, points[0].y);
+      }
     }
     if (fill) {
       context.fillStyle = fill;
