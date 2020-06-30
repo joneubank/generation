@@ -110,7 +110,7 @@ export default () => (
       lineFill: 0.15,
       maxRadius: 0.36,
       colored: false,
-      verticalSkew: 0.5,
+      verticalSkew: 0.35,
       segmentLength: 3,
       verticalOffset: 0.09,
     }}
