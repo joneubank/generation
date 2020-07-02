@@ -75,6 +75,7 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
     showMachine,
 
     machineScale,
+    machinePosition,
 
     topSpeed,
     topOffset,
@@ -103,42 +104,51 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
   } = params;
   const steps = ticks * speed;
 
-  const minDim = Math.min(canvas.width, canvas.height) * machineScale;
+  const minDim = Math.min(canvas.width, canvas.height);
+  const machineDim = minDim * machineScale;
+
+  const machineOrigin = machinePosition.scale(minDim);
 
   // Stage Position (moving 0,0)
   stageAngle += steps * stageSpeed;
-  const stagePoint = Vec2(minDim * stageOffset, 0).rotate(stageAngle);
+  const stagePoint = Vec2(machineDim * stageOffset, 0).rotate(
+    stageAngle + stageInitial,
+  );
 
   // Motor positions
   topAngle += steps * topSpeed;
-  const topPoint = Vec2(minDim * topOffset, 0)
+  const topPoint = Vec2(machineDim * topOffset, 0)
     .rotate(topAngle)
-    .add(topPosition.scale(minDim))
+    .add(topPosition.scale(machineDim))
     .add(stagePoint)
-    .rotate(stageAngle);
+    .rotate(stageAngle)
+    .add(machineOrigin);
 
   leftAngle += steps * leftSpeed;
-  const leftPoint = Vec2(minDim * leftOffset, 0)
+  const leftPoint = Vec2(machineDim * leftOffset, 0)
     .rotate(leftAngle)
-    .add(leftPosition.scale(minDim))
+    .add(leftPosition.scale(machineDim))
     .add(stagePoint)
-    .rotate(stageAngle);
+    .rotate(stageAngle)
+    .add(machineOrigin);
 
   rightAngle += steps * rightSpeed;
-  const rightPoint = Vec2(minDim * rightOffset, 0)
+  const rightPoint = Vec2(machineDim * rightOffset, 0)
     .rotate(rightAngle)
-    .add(rightPosition.scale(minDim))
+    .add(rightPosition.scale(machineDim))
     .add(stagePoint)
-    .rotate(stageAngle);
+    .rotate(stageAngle)
+    .add(machineOrigin);
 
   // lets solve some arm positions
 
   // Top Arms First
-  const topLeftOppositeLength = armSideLeftLength * armSideLeftPivot * minDim;
+  const topLeftOppositeLength =
+    armSideLeftLength * armSideLeftPivot * machineDim;
   const topLeftMotorSeparation = topPoint.add(leftPoint.scale(-1)).magnitude();
   const armTopLeftAngle = angleFromSides(
     topLeftOppositeLength,
-    armTopLeftLength * minDim,
+    armTopLeftLength * machineDim,
     topLeftMotorSeparation,
   );
 
@@ -146,18 +156,18 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
     leftPoint
       .add(topPoint.scale(-1))
       .normalize()
-      .scale(minDim * armTopLeftLength)
+      .scale(machineDim * armTopLeftLength)
       .rotate(armTopLeftAngle),
   );
 
   const topRightOppositeLength =
-    armSideRightLength * armSideRightPivot * minDim;
+    armSideRightLength * armSideRightPivot * machineDim;
   const topRightMotorSeparation = topPoint
     .add(rightPoint.scale(-1))
     .magnitude();
   const armTopRightAngle = angleFromSides(
     topRightOppositeLength,
-    armTopRightLength * minDim,
+    armTopRightLength * machineDim,
     topRightMotorSeparation,
   );
 
@@ -165,7 +175,7 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
     rightPoint
       .add(topPoint.scale(-1))
       .normalize()
-      .scale(minDim * armTopRightLength)
+      .scale(machineDim * armTopRightLength)
       .rotate(-armTopRightAngle),
   );
 
@@ -174,14 +184,14 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
     leftPoint
       .add(armTopLeftJoinPoint.scale(-1))
       .normalize()
-      .scale(minDim * armSideLeftLength),
+      .scale(machineDim * armSideLeftLength),
   );
 
   const armSideRightJoinPoint = armTopRightJoinPoint.add(
     rightPoint
       .add(armTopRightJoinPoint.scale(-1))
       .normalize()
-      .scale(minDim * armSideRightLength),
+      .scale(machineDim * armSideRightLength),
   );
 
   // Now center arms
@@ -190,15 +200,15 @@ const loop = ({ ticks, time, context, pallete, rng, canvas, params }) => {
     .magnitude();
 
   const sideLeftJoinAngle = angleFromSides(
-    minDim * armCenterRightLength,
-    minDim * armCenterLeftLength,
+    machineDim * armCenterRightLength,
+    machineDim * armCenterLeftLength,
     sideJoinSeparation,
   );
   const drawPoint = armSideLeftJoinPoint.add(
     armSideRightJoinPoint
       .add(armSideLeftJoinPoint.scale(-1))
       .normalize()
-      .scale(minDim * armCenterLeftLength)
+      .scale(machineDim * armCenterLeftLength)
       .rotate(-sideLeftJoinAngle),
   );
   points.push(drawPoint);
@@ -254,27 +264,28 @@ export default () => (
       speed: 1000 / 10, // denominator is number of steps per second
       showMachine: false,
 
-      machineScale: 3.3,
+      machineScale: 1.8,
+      machinePosition: Vec2(0, 0),
       //There are 4 motors, each with speed, offset, and initial angle
-      //   all but the stage have an x/y position. The x/y given here is scaled by minDim with 0,0 at the image center
+      //   all but the stage have an x/y position. The x/y given here is scaled by machineDim with 0,0 at the image center
       // speed = radians per step
-      // offset = ratio of minDim, turns into pixels from motor center
+      // offset = ratio of machineDim, turns into pixels from motor center
       // initial = initial radians of the motor at loop start.
-      topSpeed: (((Math.PI * 2) / 60 / 1000) * 1) / 1.5, //bracketted number is inverse of seconds per full rotation
-      topOffset: 1 / 20,
+      topSpeed: (((Math.PI * 2) / 60 / 1000) * 1) / 1, //bracketted number is inverse of seconds per full rotation
+      topOffset: 2 / 20,
       topInitial: 0,
       topPosition: Vec2(0, -0.3),
-      leftSpeed: ((Math.PI * 2) / 60 / 1000) * (1 / 4), //bracketted number is inverse of seconds per full rotation,
-      leftOffset: 1 / 25,
+      leftSpeed: ((Math.PI * 2) / 60 / 1000) * (1 / 1), //bracketted number is inverse of seconds per full rotation,
+      leftOffset: 1 / 20,
       leftInitial: 0,
-      leftPosition: Vec2(-0.3, 0.1),
-      rightSpeed: ((Math.PI * 2) / 60 / 1000) * (1 / 3), //bracketted number is inverse of seconds per full rotation,
-      rightOffset: 1 / 30,
+      leftPosition: Vec2(-0.3, 0.0),
+      rightSpeed: ((Math.PI * 2) / 60 / 1000) * (1 / 2), //bracketted number is inverse of seconds per full rotation,
+      rightOffset: 1 / 20,
       rightInitial: 0,
-      rightPosition: Vec2(0.3, 0.1),
-      stageSpeed: ((Math.PI * 2 - 0.01) / 60 / 1000) * (1 / 1.5 / 2 / 3), //bracketted number is inverse of seconds per full rotation,
-      stageOffset: 0.0,
-      stageInitial: 0,
+      rightPosition: Vec2(0.3, 0.0),
+      stageSpeed: ((Math.PI * 2) / 60 / 1000) * (1 / 180), //bracketted number is inverse of seconds per full rotation,
+      stageOffset: 0.4 / 10,
+      stageInitial: Math.PI / 4,
 
       // There are 6 arms, each with a fixed length.
       // Two of the arms also have a pivot position somwhere along that length.
@@ -285,8 +296,8 @@ export default () => (
       armSideLeftPivot: 0.6,
       armSideRightLength: 0.5,
       armSideRightPivot: 0.6,
-      armCenterLeftLength: 0.35,
-      armCenterRightLength: 0.35,
+      armCenterLeftLength: 0.45,
+      armCenterRightLength: 0.45,
     }}
   />
 );
