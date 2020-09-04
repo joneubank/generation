@@ -12,7 +12,19 @@ export const distributions = {
       return 1 - 1 / Math.pow(x, -n);
     }
   },
-  // normal: ({ mean = 0.5, variance = 1 } = {}) => x => mean,
+  normal: ({ min = 0, max = 1, skew = 1.1 } = {}) => x => {
+    const randn_bm = (min, max, skew) => {
+      let num = Math.sqrt(-2.0 * Math.log(x)) * Math.cos(2.0 * Math.PI * x);
+
+      num = num / 10.0 + 0.5; // Translate to 0 -> 1
+      // if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+      num = Math.pow(num, skew); // Skew
+      num *= max - min; // Stretch to fill range
+      num += min; // offset to min
+      return num;
+    };
+    return randn_bm(min, max, skew);
+  },
   sin: (phase = 0, period = 1) => x =>
     (Math.sin(x * Math.PI * 2 * period + phase) + 1) / 2,
   cos: (phase = 0, period = 1) => x =>

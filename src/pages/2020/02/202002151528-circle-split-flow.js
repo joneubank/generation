@@ -57,7 +57,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     const angleNoise3 = perlin(rng.next(), perlinOctaves);
     const angleDensity = perlinAngleDensity;
 
-    const circleDraw = (radius, baseColor) =>
+    const circleDraw = (radius, baseColor, noise) =>
       repeat(lines, i => {
         const rads = rng.float(0, Math.PI * 2) * shapeArc;
         const start = polarToVec2(rads, radius);
@@ -97,14 +97,14 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
           .darken(rng.fuzzy(0, 30))
           // .setAlpha(0.75)
           .toRgbString();
-        drawLine(Vec2(stepSize, 0), color, angleNoise1);
+        drawLine(Vec2(stepSize, 0), color, noise);
         // drawLine(Vec2(-stepSize, 0), color, angleNoise2);
       });
 
     const scale = (Math.min(width, height) / 2) * shapeScale;
-    circleDraw(scale * 2.6, 0);
-    circleDraw(scale, 0);
-    circleDraw(scale * 1.8, 1);
+    circleDraw(scale * 2.6, 2, angleNoise1);
+    circleDraw(scale * 1.8, 1, angleNoise1);
+    circleDraw(scale, 0, angleNoise1);
   };
 
   draw(canvas.width, canvas.height);
@@ -130,8 +130,8 @@ export default () => (
       shapeLayers: 5,
       shapeArc: 1,
       shapeMaxFreq: 10,
-      perlinOctaves: 8,
-      perlinAngleDensity: 8,
+      perlinOctaves: 4,
+      perlinAngleDensity: 5,
       strokeWidth: 3,
     }}
   />
