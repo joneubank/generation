@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import Random from '../random';
 import Pallete from '../colors/palletes';
 
-import { merge, assign } from 'lodash';
+import qs from 'query-string';
+
+import SketchMenu from './SketchMenu';
+
+import { merge, assign, clone, debounce } from 'lodash';
 
 /* ********************************* *
  * Options and Random Initialization
@@ -61,7 +65,7 @@ const resize = (canvas, width, height) => {
 };
 
 const redraw = (params, options, draw, loop, canvas, wrapper) => {
-  console.log(`Options:`, options);
+  console.log(`Options:`, options, params);
 
   if (frameRequestId) {
     window.cancelAnimationFrame(frameRequestId);
@@ -136,11 +140,12 @@ const redraw = (params, options, draw, loop, canvas, wrapper) => {
   }
 };
 
-const download = () => {
+const download = (filename) => {
+  const saveas = filename ? `${filename}.png` : `${document.title}.png`;
   const downloadLink = document.getElementById('downloader');
   const image = canvas.toDataURL('image/png');
   downloadLink.setAttribute('href', image);
-  downloadLink.setAttribute('download', `${document.title}.png`);
+  downloadLink.setAttribute('download', saveas);
   downloadLink.click();
 };
 let keydownHandler = undefined;
@@ -180,41 +185,70 @@ const compare = (obj1, obj2) => {
   return true;
 };
 
-const originalParams = {};
-const sketchParams = {};
+export default ({
+  options = {},
+  draw = () => {},
+  loop,
+  params = {},
 
-export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
-  const [stateParams, setStateParams] = useState(params);
+  controls,
+}) => {
+  // const [stateParams, setStateParams] = useState(params);
 
-  useEffect(() => {
-    console.log('Sketch says "Hello!"');
+  const queryParams = qs.parse(location.search);
+  // t = title
+  // p = pallete
 
-    const canvas = document.getElementById('canvas');
-    const wrapper = document.getElementById('canvas-wrapper');
+  const controlParams = {
+    ...params,
+    title: queryParams.t || '',
+    pallete: queryParams.p || '',
+  };
 
-    const sketchOptions = merge(defaultOptions, options);
+  let canvas;
+  let wrapper;
 
-    const rand = Random(sketchOptions.seed);
+  const sketchOptions = merge(defaultOptions, options);
 
-    const regen = () => {
+  const redrawHelper = () =>
+    redraw(controlParams, sketchOptions, draw, loop, canvas, wrapper);
+
+  const rand = Random(sketchOptions.seed);
+
+  const regen = () => {
+    // Title regen:
+    if (!queryParams.t) {
       if (titleIndex >= titleArray.length) {
         titleArray.push(rand.label());
       }
       sketchOptions.title = titleArray[titleIndex];
+    } else {
+      sketchOptions.title = queryParams.t;
+    }
+    controlParams.title = sketchOptions.title;
+
+    // Pallete rege:
+
+    if (!queryParams.p) {
       if (palleteIndex >= palleteArray.length) {
         palleteArray.push(rand.label());
       }
       sketchOptions.pallete = palleteArray[palleteIndex];
-    };
-
-    if (!compare(params, originalParams)) {
-      assign(sketchParams, params);
+    } else {
+      sketchOptions.pallete = queryParams.p;
     }
+    controlParams.pallete = sketchOptions.pallete;
+  };
+
+  // On Initialization
+  useEffect(() => {
+    console.log('Sketch says "Hello!"');
+
+    canvas = document.getElementById('canvas');
+    wrapper = document.getElementById('canvas-wrapper');
 
     regen();
 
-    const redrawHelper = () =>
-      redraw(sketchParams, sketchOptions, draw, loop, canvas, wrapper);
     redrawHelper();
 
     /* Event Handlers Below */
@@ -223,78 +257,81 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
     }
 
     keydownHandler = function (event) {
-      console.log(event.code);
-      switch (event.code) {
-        case 'KeyR':
-          // Redraw sketch
-          time = 0;
-          redrawHelper();
-          break;
-        case 'KeyP':
-          // Change pallete and nothing else
-          palleteIndex = palleteArray.length;
-          regen();
-          redrawHelper();
-          break;
-        case 'KeyO':
-          // Change title and nothing else
-          titleIndex = titleArray.length;
-          regen();
-          redrawHelper();
-          break;
-        case 'Space':
-          titleIndex = titleArray.length;
-          palleteIndex = palleteArray.length;
-          regen();
-          // Refresh everything then redraw sketch
-          // generate();
-          redrawHelper();
-          break;
-        case 'ArrowRight':
-          titleIndex += 1;
-          if (titleIndex > titleArray.length) {
-            titleIndex = titleArray.length;
-          }
-          regen();
-          redrawHelper();
-          break;
-        case 'ArrowLeft':
-          titleIndex -= 1;
-          if (titleIndex <= 0) {
-            titleIndex = 0;
-          }
-          regen();
-          redrawHelper();
-          break;
-        case 'ArrowUp':
-          palleteIndex += 1;
-          if (palleteIndex > palleteArray.length) {
+      // Ignore keystrokes made while focus is on control panel
+      if (event.target.localName !== 'input') {
+        console.log(event.code);
+        switch (event.code) {
+          case 'KeyR':
+            // Redraw sketch
+            time = 0;
+            redrawHelper();
+            break;
+          case 'KeyP':
+            // Change pallete and nothing else
             palleteIndex = palleteArray.length;
-          }
-          regen();
-          redrawHelper();
-          break;
-        case 'ArrowDown':
-          palleteIndex -= 1;
-          if (palleteIndex <= 0) {
-            palleteIndex = 0;
-          }
-          regen();
-          redrawHelper();
-          break;
-        case 'KeyF':
-          // Toggle fullscreen
-          sketchOptions.fullscreen = !sketchOptions.fullscreen;
-          redrawHelper();
-          break;
-        case 'KeyS':
-          download();
-          break;
-        case 'Enter':
-          paused = !paused;
-          break;
-        default:
-          break;
+            regen();
+            redrawHelper();
+            break;
+          case 'KeyO':
+            // Change title and nothing else
+            titleIndex = titleArray.length;
+            regen();
+            redrawHelper();
+            break;
+          case 'Space':
+            titleIndex = titleArray.length;
+            palleteIndex = palleteArray.length;
+            regen();
+            // Refresh everything then redraw sketch
+            // generate();
+            redrawHelper();
+            break;
+          case 'ArrowRight':
+            titleIndex += 1;
+            if (titleIndex > titleArray.length) {
+              titleIndex = titleArray.length;
+            }
+            regen();
+            redrawHelper();
+            break;
+          case 'ArrowLeft':
+            titleIndex -= 1;
+            if (titleIndex <= 0) {
+              titleIndex = 0;
+            }
+            regen();
+            redrawHelper();
+            break;
+          case 'ArrowUp':
+            palleteIndex += 1;
+            if (palleteIndex > palleteArray.length) {
+              palleteIndex = palleteArray.length;
+            }
+            regen();
+            redrawHelper();
+            break;
+          case 'ArrowDown':
+            palleteIndex -= 1;
+            if (palleteIndex <= 0) {
+              palleteIndex = 0;
+            }
+            regen();
+            redrawHelper();
+            break;
+          case 'KeyF':
+            // Toggle fullscreen
+            sketchOptions.fullscreen = !sketchOptions.fullscreen;
+            redrawHelper();
+            break;
+          case 'KeyS':
+            download(`${sketchOptions.title}-${sketchOptions.pallete}`);
+            break;
+          case 'Enter':
+            paused = !paused;
+            break;
+          default:
+            break;
+        }
       }
     };
 
@@ -323,10 +360,69 @@ export default ({ options = {}, draw = () => {}, loop, params = {} }) => {
     window.addEventListener('resize', resizeHandler, true);
   });
 
+  const controlPanelUpdate = (property, value, updatedState) => {
+    const updateQueryString = () => {
+      if (history.pushState) {
+        const updatedQuery = qs.stringify(queryParams);
+        console.log('Updating history state', { queryParams, updatedQuery });
+        history.pushState(
+          null,
+          '',
+          `${window.location.pathname}?${updatedQuery}`,
+        );
+      }
+    };
+
+    switch (property) {
+      case 'title':
+        // use query string to update query param in page location
+        if (value) {
+          queryParams.t = value;
+        } else {
+          delete queryParams.t;
+        }
+        updateQueryString();
+
+        // update sketchOptions to use this title.
+        sketchOptions.title = value;
+        break;
+      case 'pallete':
+        // use query string to update query param in page location
+        if (value) {
+          queryParams.p = value;
+        } else {
+          delete queryParams.p;
+        }
+        updateQueryString();
+
+        // update sketchOptions to use this title.
+        sketchOptions.pallete = value;
+        break;
+      default:
+        // Do nothing
+        break;
+    }
+
+    assign(controlParams, updatedState);
+    console.log('Redrawing from control panel event:', {
+      property,
+      value,
+      updatedState,
+    });
+
+    regen();
+    redrawHelper();
+  };
+
   return (
     <>
-      {/* <SketchMenu /> */}
       <div className="fixed-fullscreen">
+        <SketchMenu
+          params={controlParams}
+          controls={controls}
+          updateHandler={controlPanelUpdate}
+        />
+
         <div id="canvas-wrapper">
           <canvas download="asdf" id="canvas"></canvas>
         </div>

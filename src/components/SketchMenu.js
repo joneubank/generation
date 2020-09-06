@@ -1,5 +1,81 @@
 import React, { useEffect, useState } from 'react';
 
-export default ({}) => {
-  return <div class="sketch-menu-wrapper">test</div>;
+import { debounce } from 'lodash';
+
+import ControlPanel, {
+  Button,
+  Checkbox,
+  Multibox,
+  Select,
+  Text,
+  Color,
+  Range,
+  Interval,
+  Custom,
+} from 'react-control-panel';
+
+const applyAllLabel = 'Toggle this to apply all settings';
+
+const SectionTitle = ({ children }) => (
+  <div
+    style={{
+      width: '100%',
+      textAlign: 'center',
+      color: 'rgb(161, 161, 161)',
+      textTransform: 'uppercase',
+      height: '20px',
+      marginBottom: '4px',
+      marginTop: '8px',
+    }}
+  >
+    {children}
+  </div>
+);
+
+export default ({ params, controls, updateHandler }) => {
+  const debounceTime = controls ? controls.debounce || 250 : 250;
+  const debouncedUpdate = debounce(updateHandler, debounceTime);
+
+  const buildControls = () => {
+    return controls.map((control) => {
+      switch (control.type) {
+        case 'range':
+          return (
+            <Range
+              key={control.key}
+              label={control.key}
+              min={control.min}
+              max={control.max}
+              step={control.step || 1}
+            />
+          );
+        default:
+          return null;
+      }
+    });
+  };
+  return (
+    <div className="sketch-menu-wrapper">
+      <ControlPanel
+        theme="dark"
+        title="Control Panel"
+        initialState={{ ...params, [applyAllLabel]: true }}
+        onChange={debouncedUpdate}
+        width={350}
+        style={{ marginRight: 30 }}
+      >
+        <SectionTitle>Fixed Image Seeds</SectionTitle>
+        <Text label="title" />
+        <Text label="pallete" />
+        {controls && (
+          <>
+            <SectionTitle>Sketch Params</SectionTitle>
+            {buildControls()}
+            <SectionTitle>Reset All</SectionTitle>
+            <Checkbox label={applyAllLabel} />
+          </>
+        )}
+      </ControlPanel>
+    </div>
+  );
 };

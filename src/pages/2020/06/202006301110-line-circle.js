@@ -68,25 +68,27 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
 
       const segments = Math.ceil((2 * Math.PI * radius) / segmentLength);
 
-      const points = array(0, segments).map((i) => {
-        const angle = (i / segments) * Math.PI * 2;
-        const distortion = Vec2(0, distortWave.at(angle)).scale(
-          Math.pow(Math.sin(angle / 2) * ratio, 2),
-        );
-        return Vec2(0, 1)
-          .add(distortion)
-          .rotate(angle)
-          .scale(radius)
-          .add(Vec2(0, yOffset + verticalOffset * minDim));
-      });
+      if (segments && segments > 0) {
+        const points = array(0, segments).map((i) => {
+          const angle = (i / segments) * Math.PI * 2;
+          const distortion = Vec2(0, distortWave.at(angle)).scale(
+            Math.pow(Math.sin(angle / 2) * ratio, 0.5),
+          );
+          return Vec2(0, 1)
+            .add(distortion)
+            .rotate(angle)
+            .scale(radius)
+            .add(Vec2(0, yOffset + verticalOffset * minDim));
+        });
 
-      path({
-        points,
-        stroke: 'black',
-        strokeWidth,
-        close: true,
-        fill: gradient.rgbAt(ratio),
-      });
+        path({
+          points,
+          stroke: 'black',
+          strokeWidth,
+          close: true,
+          fill: gradient.rgbAt(ratio),
+        });
+      }
     });
   };
 
@@ -106,13 +108,19 @@ export default () => (
     }}
     draw={draw}
     params={{
-      lines: 21,
-      lineFill: 0.15,
+      lines: 10,
+      lineFill: 0.1,
       maxRadius: 0.36,
       colored: false,
-      verticalSkew: 0.35,
-      segmentLength: 3,
-      verticalOffset: 0.09,
+      verticalSkew: 0.3,
+      segmentLength: 5,
+      verticalOffset: 0.1,
     }}
+    controls={[
+      { key: 'lines', type: 'range', min: 3, max: 34, step: 1 },
+      { key: 'lineFill', type: 'range', min: 0, max: 1, step: 0.01 },
+      { key: 'verticalSkew', type: 'range', min: -2, max: 3, step: 0.01 },
+      { key: 'verticalOffset', type: 'range', min: -1, max: 1, step: 0.001 },
+    ]}
   />
 );

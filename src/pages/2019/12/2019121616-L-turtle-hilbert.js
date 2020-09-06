@@ -25,8 +25,8 @@ const grammar = ({
   let current = Array.from(initial);
   const next = () => {
     let output = [];
-    current.forEach(symbol => {
-      const rule = rules.find(r => r.initial === symbol);
+    current.forEach((symbol) => {
+      const rule = rules.find((r) => r.initial === symbol);
       if (rule) {
         output = output.concat(Array.from(rule.output));
       } else {
@@ -36,7 +36,7 @@ const grammar = ({
     current = output;
     return get();
   };
-  const iterate = iterations => {
+  const iterate = (iterations) => {
     repeat(iterations, next);
     return get();
   };
@@ -55,8 +55,8 @@ const g = grammar({
   rules: [rule('X', '-YF+XFX+FY-'), rule('Y', '+XF-YFY-FX+')],
 });
 const data = g.iterate(iters);
-console.log(data);
-console.log(`L system length: ${data.length}`);
+// console.log(data);
+// console.log(`L system length: ${data.length}`);
 
 const draw = ({ context, pallete, rng, canvas }) => {
   const { rect, circle, path } = Draw(context);
@@ -87,9 +87,9 @@ const draw = ({ context, pallete, rng, canvas }) => {
     pallete.colors[2].value().toRgbString(),
   ]);
 
-  const grad = gradient.rgb(data.filter(i => i === 'F').length);
+  const grad = gradient.rgb(data.filter((i) => i === 'F').length);
 
-  const draw = seed => () => {
+  const draw = (seed) => () => {
     const rand = Random(seed);
 
     const transformStack = [];
@@ -106,7 +106,7 @@ const draw = ({ context, pallete, rng, canvas }) => {
 
     let color = 0;
 
-    data.forEach(symbol => {
+    data.forEach((symbol) => {
       switch (symbol) {
         case 'A':
         case 'F':

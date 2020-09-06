@@ -124,12 +124,12 @@ export default () => (
     }}
     draw={draw}
     params={{
-      rotations: 500,
-      blobsMin: 1,
-      blobsMax: 13,
-      steps: 20000,
-      spiralRadiusMax: 220,
-      spiralRadiusMin: 7,
+      rotations: 1000,
+      blobsMin: 13,
+      blobsMax: 20,
+      steps: 50000,
+      spiralRadiusMax: 320,
+      spiralRadiusMin: 75,
       spiralOriginOffsetMax: 0,
       pathRadius: 600,
     }}

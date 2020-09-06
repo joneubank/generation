@@ -203,9 +203,9 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
         stroke: tinycolor('#eee').setAlpha(0.3).toRgbString(),
         stroke: rng.chooseOne(nicePallete),
         stroke: tinycolor(rng.chooseOne(nicePallete))
-          .setAlpha(0.3)
+          .setAlpha(0.8)
           .toRgbString(),
-        strokeWidth: 2,
+        strokeWidth: 5,
       });
     });
   };
@@ -226,8 +226,8 @@ export default () => (
     }}
     draw={draw}
     params={{
-      steps: 100,
-      particleCount: 5000,
+      steps: 20,
+      particleCount: 2000,
 
       momentumDecay: 0.6,
       initialMomentumMax: 0 / 10000,
@@ -246,9 +246,9 @@ export default () => (
       attractStuckDistance: 9 / 1000,
       showAttractors: false,
 
-      twisterCount: 13,
-      twistForceMin: 500 / 10000,
-      twistForceMax: 1000 / 10000,
+      twisterCount: 10,
+      twistForceMin: 200 / 10000,
+      twistForceMax: 500 / 10000,
       showTwisters: false,
     }}
   />

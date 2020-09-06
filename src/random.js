@@ -4,15 +4,15 @@ import Pallete from './colors/palletes';
 import { getNoun, getAdjective } from './words';
 
 export const distributions = {
-  uniform: () => x => x,
-  power: n => x => {
+  uniform: () => (x) => x,
+  power: (n) => (x) => {
     if (n >= 0) {
       return Math.pow(x, n);
     } else {
       return 1 - 1 / Math.pow(x, -n);
     }
   },
-  normal: ({ min = 0, max = 1, skew = 1.1 } = {}) => x => {
+  normal: ({ min = 0, max = 1, skew = 1.1 } = {}) => (x) => {
     const randn_bm = (min, max, skew) => {
       let num = Math.sqrt(-2.0 * Math.log(x)) * Math.cos(2.0 * Math.PI * x);
 
@@ -25,20 +25,20 @@ export const distributions = {
     };
     return randn_bm(min, max, skew);
   },
-  sin: (phase = 0, period = 1) => x =>
+  sin: (phase = 0, period = 1) => (x) =>
     (Math.sin(x * Math.PI * 2 * period + phase) + 1) / 2,
-  cos: (phase = 0, period = 1) => x =>
+  cos: (phase = 0, period = 1) => (x) =>
     (Math.cos(x * Math.PI * 2 * period + phase) + 1) / 2,
 };
 
 const Random = (seed, context) => {
   let _context = context;
-  let _seed = seed || Math.random();
+  let _seed = `[]${seed || Math.random()}`;
   let rng = srng(_seed);
   let count = 0;
   const stack = [];
 
-  const next = (dist = x => x) => {
+  const next = (dist = (x) => x) => {
     count += 1;
     return dist(rng());
   };
@@ -47,7 +47,7 @@ const Random = (seed, context) => {
   const fuzzy = (num, range) => num + next() * range * 2 - range;
 
   // list manipulations
-  const chooseOne = items => {
+  const chooseOne = (items) => {
     return items[int(0, items.length - 1)];
   };
   const choose = (items, count = 1) => {
@@ -57,11 +57,11 @@ const Random = (seed, context) => {
     for (let i = 0; i < count; i++) {
       choices.push(options.splice(int(0, options.length - 1), 1)[0]);
     }
-    return choices.map(choice => items[choice]);
+    return choices.map((choice) => items[choice]);
   };
 
-  const shuffle = items => {
-    const output = items.map(i => i);
+  const shuffle = (items) => {
+    const output = items.map((i) => i);
 
     let currentIndex = items.length;
     let temporaryValue, randomIndex;
@@ -136,7 +136,7 @@ const Random = (seed, context) => {
     _context = context ? context : nextSeed;
   };
 
-  const pop = seed => {
+  const pop = (seed) => {
     if (stack.length > 0) {
       const data = stack.pop();
       rng = data.rng;

@@ -77,3 +77,9 @@ canvas {
   -moz-box-shadow: 0px 0px 34px 4 rgba(0, 0, 0, 0.7);
   box-shadow: 0px 0px 34px 4px rgba(0, 0, 0, 0.7);
 }
+
+.sketch-menu-wrapper {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
