@@ -33,10 +33,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   rect({
     width: canvas.width,
     height: canvas.height,
-    fill: pallete
-      .random()
-      .value()
-      .toRgbString(),
+    fill: pallete.random().value().toRgbString(),
     fill: '#eee',
     fill: '#191919',
   });
@@ -44,11 +41,13 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   // Move 0,0 to the canvas center:
   context.translate(canvas.width / 2, canvas.height / 2);
 
-  const drawLines = (width, height, distortion = point => point, scale = 1) => {
-    const stroke = pallete
-      .next()
-      .value()
-      .toRgbString();
+  const drawLines = (
+    width,
+    height,
+    distortion = (point) => point,
+    scale = 1,
+  ) => {
+    const stroke = pallete.next().value().toRgbString();
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
     const minDim = Math.min(width, height);
     const shapeHeight = minDim * imageScale;
@@ -56,7 +55,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
     // const stroke = '#191919';
     // const stroke = '#eee';
     const strokeWidth = (shapeHeight / lines) * lineFill;
-    repeat(lines, i => {
+    repeat(lines, (i) => {
       // context.rotate(0.025);
       const lineY = i / lines;
 
@@ -65,13 +64,13 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
       const lineLength = 2 * lineX;
       const linePoints = Math.ceil((pointsPerLine * lineLength) / 2); //Math.ceil(lineLength * shapeHeight * pointDensity);
       const points = array(0, linePoints + 1)
-        .map(p => {
+        .map((p) => {
           return Vec2(
             (-lineX + ((p * 2) / (linePoints + 1)) * lineX) / 2,
             lineY,
           );
         })
-        .map(point =>
+        .map((point) =>
           distortion(point)
             .scale(shapeHeight)
             .add(Vec2(0, -radius))
@@ -86,8 +85,8 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   };
 
   const draw = (width, height) => {
-    const randomDistort = point => point.add(Vec2(0, rng.float(-0.01, 0)));
-    const defaultDistort = point => point;
+    const randomDistort = (point) => point.add(Vec2(0, rng.float(-0.01, 0)));
+    const defaultDistort = (point) => point;
 
     context.rotate(rng.float(0, Math.PI * 2));
     context.save();
@@ -96,7 +95,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
 
     repeat(1, () => {
       const noise = perlin(rng.next(), 4);
-      const noiseDistort = function(point) {
+      const noiseDistort = function (point) {
         const push = noise(point.x + 1, point.y + 1) - 0.5;
         return point.add({ x: 0, y: push });
       };

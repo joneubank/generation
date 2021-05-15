@@ -59,10 +59,9 @@ export default () => (
     draw={draw}
     params={{
       debounce: 250,
-      steps: 10000,
+      radius: 50,
+      fill: 1,
     }}
-    controls={[
-      { key: 'steps', type: 'range', min: 1000, max: 50000, step: 100 },
-    ]}
+    controls={[{ key: 'radius', type: 'range', min: 11, max: 255, step: 1 }]}
   />
 );

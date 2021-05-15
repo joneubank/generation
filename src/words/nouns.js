@@ -1700,7 +1700,6 @@ export default [
   `stem`,
   `surgeon`,
   `physics`,
-  `rape`,
   `counsel`,
   `brush`,
   `jeans`,
@@ -2869,5 +2868,5 @@ export const pluralExceptions = {
   phenomenon: 'phenomena',
 };
 
-export const pluralize = noun =>
+export const pluralize = (noun) =>
   pluralExceptions[noun] ? pluralExceptions[noun] : `${noun}s`;

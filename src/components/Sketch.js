@@ -193,7 +193,7 @@ export default ({
 
   controls,
 }) => {
-  // const [stateParams, setStateParams] = useState(params);
+  // const [showMenu, setShowMenu] = useState(true);
 
   const queryParams = qs.parse(location.search);
   // t = title
@@ -417,11 +417,13 @@ export default ({
   return (
     <>
       <div className="fixed-fullscreen">
-        <SketchMenu
-          params={controlParams}
-          controls={controls}
-          updateHandler={controlPanelUpdate}
-        />
+        {true ? (
+          <SketchMenu
+            params={controlParams}
+            controls={controls}
+            updateHandler={controlPanelUpdate}
+          />
+        ) : null}
 
         <div id="canvas-wrapper">
           <canvas download="asdf" id="canvas"></canvas>

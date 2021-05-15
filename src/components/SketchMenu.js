@@ -33,7 +33,7 @@ const SectionTitle = ({ children }) => (
 );
 
 export default ({ params, controls, updateHandler }) => {
-  const debounceTime = controls ? controls.debounce || 250 : 250;
+  const debounceTime = params ? params.debounce || 250 : 250;
   const debouncedUpdate = debounce(updateHandler, debounceTime);
 
   const buildControls = () => {
@@ -49,6 +49,18 @@ export default ({ params, controls, updateHandler }) => {
               step={control.step || 1}
             />
           );
+        case 'boolean':
+          return <Checkbox label={control.key} key={control.key} />;
+        case 'list':
+          return (
+            <Select
+              label={control.key}
+              key={control.key}
+              options={control.options}
+            />
+          );
+        case 'header':
+          return <SectionTitle>{control.title}</SectionTitle>;
         default:
           return null;
       }

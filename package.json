@@ -43,6 +43,7 @@
   },
   "prettier": {
     "trailingComma": "all",
-    "singleQuote": true
+    "singleQuote": true,
+    "arrowFunctionParentheses":"always"
   }
 }

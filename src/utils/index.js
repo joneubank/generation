@@ -4,6 +4,10 @@ export const repeat = (count, method) => {
   }
 };
 
+export const sequence = (count, method) => {
+  return array(0, count).map((i) => method(i));
+};
+
 export const array = (min, max) =>
   [...Array(max - min).keys()].map((i) => i + min);
 
