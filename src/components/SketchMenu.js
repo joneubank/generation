@@ -74,7 +74,7 @@ export default ({ params, controls, updateHandler }) => {
         initialState={{ ...params, [applyAllLabel]: true }}
         onChange={debouncedUpdate}
         width={350}
-        style={{ marginRight: 30 }}
+        style={{ marginLeft: 30 }}
       >
         <SectionTitle>Fixed Image Seeds</SectionTitle>
         <Text label="title" />

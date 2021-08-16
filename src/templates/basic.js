@@ -39,7 +39,7 @@ const draw = ({ context, pallete, rng, canvas, params }) => {
   const draw = (width, height) => {
     // Add draw stuff here, run it at the end of the sketch method or in a repeating layout.
     const minDim = Math.min(width, height);
-    const maxDim = Math.min(width, height);
+    const maxDim = Math.max(width, height);
   };
 
   draw(canvas.width, canvas.height);
